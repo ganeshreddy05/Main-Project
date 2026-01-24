@@ -36,5 +36,6 @@ import { account } from "./appwriteConfig";
       throw error;
     }
   },
+
 };
 export default authService;

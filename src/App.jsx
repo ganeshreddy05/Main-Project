@@ -10,11 +10,11 @@ import Dashboard from "@/Pages/Private/DashBoard";
 import DashboardHome from "@/Pages/Private/DashBoardHome";
 
 /* Dashboard pages */
-import HelpRequests from "@/Pages/Private/HelpRequest";
-import HelpRequestDetails from "@/Pages/Private/HelpRequestDetails";
-import MyHelpRequests from "@/Pages/Private/MyHelpRequests";
+import HelpRequests from "@/Pages/Private/HelpRequests/HelpRequest";
+import HelpRequestDetails from "@/Pages/Private//HelpRequests/HelpRequestDetails";
+import MyHelpRequests from "@/Pages/Private//HelpRequests/MyHelpRequests";
 import TravelRequests from "@/Pages/Private/TravelRequest";
-import RoadReports from "@/Pages/Private/CreateRoadReport";
+import RoadReports from "@/Pages/Private/RoadReportsfile/CreateRoadReport";
 import Profile from "@/Pages/Private/Profile";
 
 const App = () => {

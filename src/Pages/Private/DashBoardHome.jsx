@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 const DashboardCard = ({ title, description, path, color }) => {
   const navigate = useNavigate();
+  
 
   return (
     <div
@@ -50,9 +51,11 @@ const DashboardHome = () => {
           description="Accidents & road conditions"
           path="/dashboard/road-reports"
           color="bg-gradient-to-r from-orange-500 to-red-500"
+      
         />
       </div>
     </div>
+
   );
 };
 
