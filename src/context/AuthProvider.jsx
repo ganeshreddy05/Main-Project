@@ -1,43 +1,55 @@
-import { useEffect, useState } from "react";
-import { AuthContext } from "./AuthContext";
-import  authService  from "@/services/authService";
+import { createContext, useEffect, useState } from "react";
+import { account, databases, Query } from "@/services/appwriteConfig";
+import { useNavigate } from "react-router-dom";
 
- const AuthProvider = ({ children }) => {
+export const AuthContext = createContext();
+
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const currentUser = await authService.getCurrentUser();
-      setUser(currentUser);
+  const checkAuth = async () => {
+    try {
+      const authUser = await account.get();
+      setUser(authUser);
+
+      const res = await databases.listDocuments(
+        import.meta.env.VITE_DATABASE_ID,
+        import.meta.env.VITE_USERS_COLLECTION_ID,
+        [Query.equal("userId", authUser.$id)]
+      );
+
+      if (res.documents.length === 0) {
+        navigate("/register");
+      } else {
+        setProfile(res.documents[0]);
+      }
+    } catch (err) {
+      setUser(null);
+      setProfile(null);
+    } finally {
       setLoading(false);
-    };
-
-    checkSession();
-  }, []);
-
-  const login = async (email, password) => {
-    await authService.login(email, password);
-    const currentUser = await authService.getCurrentUser();
-    setUser(currentUser);
-  };
-
-  const register = async (email, password, name) => {
-    await authService.register(email, password, name);
-    
+    }
   };
 
   const logout = async () => {
-    await authService.logout();
+    await account.deleteSession("current");
     setUser(null);
+    setProfile(null);
+    navigate("/login");
   };
 
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   return (
-    <AuthContext.Provider
-      value={{ user, loading, login, register, logout }}
-    >
-      {children}
+    <AuthContext.Provider value={{ user, profile, loading, logout }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
+
 export default AuthProvider;

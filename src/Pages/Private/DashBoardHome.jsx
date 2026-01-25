@@ -1,61 +1,80 @@
-import { useNavigate } from "react-router-dom";
-
-const DashboardCard = ({ title, description, path, color }) => {
-  const navigate = useNavigate();
-  
-
-  return (
-    <div
-      onClick={() => navigate(path)}
-      className={`cursor-pointer p-6 rounded-xl shadow-lg text-white ${color}`}
-    >
-      <h3 className="text-xl font-bold">{title}</h3>
-      <p className="mt-2 opacity-90">{description}</p>
-    </div>
-  );
-};
+import { Link } from "react-router-dom";
 
 const DashboardHome = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className="space-y-6">
-    
-      <div className="flex justify-end">
-        <button
-          onClick={() => navigate("/dashboard/help-requests")}
-          className="bg-indigo-600 text-white px-5 py-2 rounded-lg shadow hover:bg-indigo-700"
-        >
-          + Request Help
-        </button>
-      </div>
+    <div className="space-y-8">
+      <h1 className="text-2xl font-bold text-slate-800">Dashboard</h1>
 
-      {/* Cards */}
       <div className="grid md:grid-cols-3 gap-6">
-        <DashboardCard
-          title="Help Requests"
-          description="People nearby requesting help"
-          path="/dashboard/help-requests"
-          color="bg-gradient-to-r from-indigo-500 to-purple-600"
-        />
 
-        <DashboardCard
-          title="Travel Requests"
-          description="Ride & travel related alerts"
-          path="/dashboard/travel-requests"
-          color="bg-gradient-to-r from-green-500 to-emerald-600"
-        />
+        {/* Road Reports */}
+        <div className="bg-gradient-to-br from-slate-700 to-slate-900 text-white rounded-3xl p-6 shadow-lg">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold">Road Reports</h2>
+            <Link
+              to="/dashboard/road-reports"
+              className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl text-sm hover:bg-white/30 transition"
+            >
+              Report
+            </Link>
+          </div>
 
-        <DashboardCard
-          title="Road Reports"
-          description="Accidents & road conditions"
-          path="/dashboard/road-reports"
-          color="bg-gradient-to-r from-orange-500 to-red-500"
-      
-        />
+          <p className="mt-3 text-sm text-slate-200">
+            Latest road conditions in your district
+          </p>
+
+          <div className="mt-4 space-y-2">
+            <div className="bg-white/10 rounded-xl p-3">Hyderabad → Warangal</div>
+            <div className="bg-white/10 rounded-xl p-3">Kurnool → Nandyal</div>
+          </div>
+        </div>
+
+        {/* Help Requests */}
+        <div className="bg-gradient-to-br from-teal-600 to-emerald-700 text-white rounded-3xl p-6 shadow-lg">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold">Help Requests</h2>
+            <Link
+              to="/dashboard/help-requests"
+              className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl text-sm hover:bg-white/30 transition"
+            >
+              Request
+            </Link>
+          </div>
+
+          <p className="mt-3 text-sm text-emerald-100">
+            People nearby who need assistance
+          </p>
+
+          <div className="mt-4 space-y-2">
+            <div className="bg-white/10 rounded-xl p-3">Petrol needed</div>
+            <div className="bg-white/10 rounded-xl p-3">Vehicle breakdown</div>
+          </div>
+        </div>
+
+        {/* Travel Requests */}
+        <div className="bg-gradient-to-br from-rose-500 to-pink-600 text-white rounded-3xl p-6 shadow-lg">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold">Travel Requests</h2>
+            <Link
+              to="/dashboard/travel-requests"
+              className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl text-sm hover:bg-white/30 transition"
+            >
+              Create
+            </Link>
+          </div>
+
+          <p className="mt-3 text-sm text-rose-100">
+            Recent travel updates & alerts
+          </p>
+
+          <div className="mt-4 space-y-2">
+            <div className="bg-white/10 rounded-xl p-3">Hyderabad → Vijayawada</div>
+            <div className="bg-white/10 rounded-xl p-3">Traffic delay alert</div>
+          </div>
+        </div>
+
       </div>
     </div>
-
   );
 };
 

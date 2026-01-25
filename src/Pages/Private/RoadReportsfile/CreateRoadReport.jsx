@@ -1,147 +1,145 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createRoadReport, uploadRoadMedia } from "@/services/roadReportService";
+import { databases, storage, ID } from "@/services/appwriteConfig";
 import { useAuth } from "@/context/useAuth";
-import useCity from "@/context/useCity";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-
-const CreateRoadReport = () => {
+const CreateRoadReport = ({ state, district }) => {
   const { user } = useAuth();
-  const { city } = useCity();
   const queryClient = useQueryClient();
 
   const [fromPlace, setFromPlace] = useState("");
   const [toPlace, setToPlace] = useState("");
-  const [district, setDistrict] = useState("");
-  const [state, setState] = useState("");
-  const [landmark, setLandmark] = useState("");
   const [condition, setCondition] = useState("");
-  const [description, setDescription] = useState("");
+  const [landmark, setLandmark] = useState("");
   const [file, setFile] = useState(null);
-
   const [location, setLocation] = useState(null);
-  const [loadingLocation, setLoadingLocation] = useState(false);
 
-  // Capture location
-  const getLocation = () => {
-    setLoadingLocation(true);
+  const captureLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation not supported");
+      return;
+    }
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setLocation({
           lat: pos.coords.latitude,
           lng: pos.coords.longitude,
         });
-        setLoadingLocation(false);
       },
-      (err) => {
-        alert("Location permission denied");
-        setLoadingLocation(false);
-      }
+      () => alert("Location permission denied"),
     );
   };
 
   const mutation = useMutation({
     mutationFn: async () => {
-      if (!location) throw new Error("Location missing");
-      if (!district || !fromPlace || !toPlace || !condition)
-        throw new Error("Fill all required fields");
+      if (!location) throw new Error("Capture location first");
 
-      let mediaData = { mediaURL: "", mediaType: "", mediaId: "" };
+      let mediaURL = "";
+      let mediaId = "";
+      let mediaType = "";
 
       if (file) {
-        mediaData = await uploadRoadMedia(file);
+        const uploaded = await storage.createFile(
+          import.meta.env.VITE_BUCKET_ID,
+          ID.unique(),
+          file,
+        );
+
+        mediaId = uploaded.$id;
+        mediaURL = storage.getFileView(
+          import.meta.env.VITE_BUCKET_ID,
+          uploaded.$id,
+        );
+        mediaType = file.type.startsWith("video") ? "video" : "image";
       }
 
-      return createRoadReport({
-        district,
-        state,
-        fromPlace,
-        toPlace,
-        landmark,
-        condition,
-        description,
-        status: "ACTIVE",
-        lat: location.lat,
-        lng: location.lng,
-        userId: user.$id,
-        reporterName: user.name,
-        city,
-        likes: 0,
-        likedBy: [],
-        ...mediaData,
-      });
+      return databases.createDocument(
+        import.meta.env.VITE_DATABASE_ID,
+        import.meta.env.VITE_ROAD_REPORTS_COLLECTION_ID,
+        ID.unique(),
+        {
+          userId: user.$id,
+          reporterName: user.name,
+          state,
+          district,
+          fromPlace,
+          toPlace,
+          condition,
+          landmark,
+          status: "ACTIVE",
+          lat: location.lat,
+          lng: location.lng,
+          mediaURL,
+          mediaId,
+          mediaType,
+          likes: 0,
+          likedBy: [],
+        },
+      );
     },
     onSuccess: () => {
+      queryClient.invalidateQueries(["roadReports"]);
       alert("Road Report Submitted ✅");
-      queryClient.invalidateQueries(["road-reports"]);
-      setFromPlace("");
-      setToPlace("");
-      setDistrict("");
-      setState("");
-      setLandmark("");
-      setCondition("");
-      setDescription("");
-      setFile(null);
-      setLocation(null);
-    },
-    onError: (err) => {
-      console.error(err);
-      alert(err.message);
     },
   });
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow max-w-xl">
-      <h2 className="text-xl font-bold mb-4">Report Road</h2>
+    <div className="bg-white p-6 rounded-2xl shadow space-y-4">
+      <h2 className="text-xl font-bold">
+        Report Road in {district}, {state}
+      </h2>
 
-      <Input placeholder="State" value={state} onChange={(e) => setState(e.target.value)} />
-      <Input placeholder="District" value={district} onChange={(e) => setDistrict(e.target.value)} />
-      <Input placeholder="From Place" value={fromPlace} onChange={(e) => setFromPlace(e.target.value)} />
-      <Input placeholder="To Place" value={toPlace} onChange={(e) => setToPlace(e.target.value)} />
+      <div className="grid grid-cols-2 gap-4">
+        <input
+          placeholder="From Place"
+          className="border p-2 rounded-lg"
+          onChange={(e) => setFromPlace(e.target.value)}
+        />
+
+        <input
+          placeholder="To Place"
+          className="border p-2 rounded-lg"
+          onChange={(e) => setToPlace(e.target.value)}
+        />
+      </div>
 
       <select
-        className="border p-2 w-full rounded mt-2"
-        value={condition}
+        className="border p-2 rounded-lg w-full"
         onChange={(e) => setCondition(e.target.value)}
       >
         <option value="">Select Condition</option>
-        <option value="VERY_BAD">Good</option>
         <option value="BAD">Bad</option>
         <option value="UNDER_CONSTRUCTION">Under Construction</option>
         <option value="ACCIDENT">Accident</option>
-        <option value="FLOODED">Flooded</option>
+        <option value="GOOD">Good</option>
       </select>
 
-      <Input placeholder="Landmark" value={landmark} onChange={(e) => setLandmark(e.target.value)} />
-
-      <Textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
+      <input
+        placeholder="Landmark"
+        className="border p-2 rounded-lg w-full"
+        onChange={(e) => setLandmark(e.target.value)}
       />
 
-      <Input type="file" onChange={(e) => setFile(e.target.files[0])} />
+      <input
+        type="file"
+        className="w-full"
+        onChange={(e) => setFile(e.target.files[0])}
+      />
 
-      <Button className="mt-3" onClick={getLocation}>
-        {loadingLocation ? "Capturing..." : "Capture Location"}
-      </Button>
+      <button
+        onClick={captureLocation}
+        className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+      >
+        {location ? "Location Captured ✅" : "Capture Location"}
+      </button>
 
-      {location && (
-        <p className="text-green-600 mt-2">
-          Location Captured ✔ {location.lat.toFixed(4)}, {location.lng.toFixed(4)}
-        </p>
-      )}
-
-      <Button
-        className="mt-4 w-full"
-        disabled={mutation.isLoading}
+      <button
         onClick={() => mutation.mutate()}
+        className="bg-indigo-600 text-white w-full py-2 rounded-xl hover:bg-indigo-700 transition"
       >
         {mutation.isLoading ? "Submitting..." : "Submit Report"}
-      </Button>
+      </button>
     </div>
   );
 };

@@ -1,144 +1,143 @@
-import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { databases, storage, ID } from "@/services/appwriteConfig";
+import { useState, useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { databases, ID, Query } from "@/services/appwriteConfig";
 import { useAuth } from "@/context/useAuth";
 import useCity from "@/context/useCity";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 
-const CreateRoadReport = () => {
+const CreateHelpRequest = () => {
   const { user } = useAuth();
-  const { city, district, state } = useCity();
+  const { city } = useCity();
   const queryClient = useQueryClient();
 
-  const [fromPlace, setFromPlace] = useState("");
-  const [toPlace, setToPlace] = useState("");
-  const [landmark, setLandmark] = useState("");
-  const [condition, setCondition] = useState("");
+  const [helptype, setHelptype] = useState("");
   const [description, setDescription] = useState("");
-  const [file, setFile] = useState(null);
   const [location, setLocation] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  const getLocation = () => {
+  /* ---------------- GET USER LOCATION ---------------- */
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      alert("Geolocation not supported by browser");
+      return;
+    }
+
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      (position) => {
         setLocation({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          accuracy: position.coords.accuracy,
         });
       },
-      () => alert("Location permission denied")
+      (error) => {
+        alert("Location permission denied. Please allow location.");
+        console.error(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+      }
     );
-  };
+  }, []);
 
+  /* ---------------- FETCH PROFILE (PHONE) ---------------- */
+  const { data: profile } = useQuery({
+    queryKey: ["profile", user?.$id],
+    enabled: !!user,
+    queryFn: async () => {
+      const res = await databases.listDocuments(
+        import.meta.env.VITE_DATABASE_ID,
+        import.meta.env.VITE_USERS_COLLECTION_ID,
+        [Query.equal("userId", user.$id)]
+      );
+      return res.documents[0];
+    },
+  });
+
+  /* ---------------- CREATE HELP REQUEST ---------------- */
   const createMutation = useMutation({
     mutationFn: async () => {
-      if (!location) throw new Error("Capture location");
-      if (!condition) throw new Error("Select condition");
-
-      setLoading(true);
-
-      let mediaURL = "";
-      let mediaId = "";
-      let mediaType = "";
-
-      if (file) {
-        const upload = await storage.createFile(
-          import.meta.env.VITE_APPWRITE_BUCKET_ID,
-          ID.unique(),
-          file
-        );
-
-        mediaId = upload.$id;
-        mediaURL = storage.getFileView(
-          import.meta.env.VITE_APPWRITE_BUCKET_ID,
-          upload.$id
-        );
-        mediaType = file.type.startsWith("video") ? "VIDEO" : "IMAGE";
-      }
+      if (!city) throw new Error("City missing");
+      if (!helptype) throw new Error("Help type missing");
+      if (!profile?.phone) throw new Error("Phone missing in Profile");
+      if (!location) throw new Error("Location not available");
 
       return databases.createDocument(
         import.meta.env.VITE_DATABASE_ID,
-        import.meta.env.VITE_ROAD_REPORTS_COLLECTION_ID,
+        import.meta.env.VITE_HELP_REQUESTS_COLLECTION_ID,
         ID.unique(),
         {
-          state,
-          district,
           city,
-          fromPlace,
-          toPlace,
-          landmark,
-          condition,
+          helptype,
           description,
           status: "ACTIVE",
+          userId: user.$id,
+
+          // requester details (snapshot)
+          requestName: user.name,
+          requestEmail: user.email,
+          requestPhone: profile.phone,
+
+          // 📍 location data
           lat: location.lat,
           lng: location.lng,
-          mediaURL,
-          mediaId,
-          mediaType,
-          likes: 0,
-          likedBy: [],
-          userId: user.$id,
-          reporterName: user.name,
+         
         }
       );
     },
     onSuccess: () => {
-      setLoading(false);
-      alert("Road Report Submitted ✅");
-      queryClient.invalidateQueries(["road-reports"]);
+      alert("Help request created successfully ✅");
+      setHelptype("");
+      setDescription("");
+      queryClient.invalidateQueries(["help-requests"]);
+      queryClient.invalidateQueries(["my-requests"]);
     },
-    onError: (err) => {
-      setLoading(false);
-      alert(err.message);
-    },
+    onError: (err) => alert(err.message),
   });
 
   return (
     <div className="bg-white p-6 rounded-xl shadow">
-      <h2 className="text-xl font-bold mb-4">Report Road</h2>
+      <h2 className="text-xl font-bold mb-4">Request Help</h2>
 
-      <Input placeholder="From Place" onChange={(e) => setFromPlace(e.target.value)} />
-      <Input placeholder="To Place" className="mt-2" onChange={(e) => setToPlace(e.target.value)} />
-      <Input placeholder="Landmark" className="mt-2" onChange={(e) => setLandmark(e.target.value)} />
-
+      {/* Help type */}
       <select
-        className="border p-2 w-full rounded mt-3"
-        onChange={(e) => setCondition(e.target.value)}
+        className="border p-2 w-full rounded mb-3"
+        value={helptype}
+        onChange={(e) => setHelptype(e.target.value)}
       >
-        <option value="">Select Condition</option>
-        <option value="BAD">Bad Road</option>
-        <option value="UNDER_CONSTRUCTION">Under Construction</option>
-        <option value="ACCIDENT">Accident</option>
-        <option value="GOOD">Good</option>
+        <option value="">Select Help Type</option>
+        <option value="Petrol">Petrol</option>
+        <option value="Hospital">Hospital</option>
+        <option value="Breakdown">Breakdown</option>
+        <option value="Other">Other</option>
       </select>
 
+      {/* Description */}
       <Textarea
-        placeholder="Description"
-        className="mt-3"
+        placeholder="Describe the issue"
+        value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
 
-      <Input type="file" className="mt-3" onChange={(e) => setFile(e.target.files[0])} />
+      {/* Location status */}
+      <p className="text-sm text-gray-500 mt-2">
+        {location
+          ? `📍 Location detected (±${Math.round(location.accuracy)}m)`
+          : "📍 Detecting location..."}
+      </p>
 
-      <Button className="mt-3 w-full" onClick={getLocation}>
-        Capture Location
-      </Button>
-
-      {location && <p className="text-green-600 mt-2">Location Captured ✔</p>}
-
+      {/* Submit */}
       <Button
         className="mt-4 w-full"
         onClick={() => createMutation.mutate()}
-        disabled={loading}
+        disabled={createMutation.isLoading || !location}
       >
-        {loading ? "Submitting..." : "Submit Report"}
+        {createMutation.isLoading ? "Submitting..." : "Request Help"}
       </Button>
     </div>
   );
 };
 
-export default CreateRoadReport;
+export default CreateHelpRequest;

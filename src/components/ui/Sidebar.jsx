@@ -10,54 +10,57 @@ const Sidebar = () => {
   };
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 rounded-lg transition font-medium
+    `flex items-center gap-3 px-4 py-3 rounded-xl transition font-medium
      ${
        isActive
-         ? "bg-white/20 text-white"
-         : "text-indigo-100 hover:bg-white/10 hover:text-white"
+         ? "bg-indigo-100 text-indigo-700 shadow-sm"
+         : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
      }`;
 
   return (
-    <aside className="w-64 min-h-screen bg-gradient-to-b from-indigo-600 to-violet-700 p-5 text-white">
-    
-      <h2 className="text-2xl font-extrabold mb-10 tracking-wide">
-        <link rel="stylesheet" href="logo.png" /> Turn The Wheel
-      </h2>
+    <aside className="h-screen w-64 bg-gradient-to-b from-slate-50 to-slate-100 p-4 shadow-lg rounded-r-3xl">
+      {/* Logo */}
+      <div className="mb-8 px-2">
+        <h2 className="text-2xl font-bold text-indigo-700">
+          Turn The Wheel
+        </h2>
+        <p className="text-xs text-slate-500">Travel & Safety Dashboard</p>
+      </div>
 
       {/* Navigation */}
       <nav className="space-y-2">
         <NavLink to="/dashboard" end className={linkClass}>
-           Dashboard
+          🏠 Dashboard
         </NavLink>
 
         <NavLink to="/dashboard/help-requests" className={linkClass}>
-           Help Requests
-        </NavLink>
-        <NavLink to="/dashboard/my-requests" className={linkClass}>
-          My Requests
+          🚨 Help Requests
         </NavLink>
 
         <NavLink to="/dashboard/travel-requests" className={linkClass}>
-           Travel Requests
+          🧳 Travel Requests
         </NavLink>
 
         <NavLink to="/dashboard/road-reports" className={linkClass}>
-           Road Reports
+          🛣 Road Reports
+        </NavLink>
+
+        <NavLink to="/dashboard/my-history" className={linkClass}>
+          📜 My History
         </NavLink>
 
         <NavLink to="/dashboard/profile" className={linkClass}>
-           Profile
+          👤 Profile
         </NavLink>
       </nav>
 
-      
-      <div className="mt-10">
+      {/* Logout */}
+      <div className="mt-auto pt-6">
         <button
           onClick={logoutHandler}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg
-                     bg-red-500/90 hover:bg-red-600 transition font-medium"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-rose-600 hover:bg-rose-100 transition font-medium"
         >
-           Logout
+          🚪 Logout
         </button>
       </div>
     </aside>
