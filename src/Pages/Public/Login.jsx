@@ -20,9 +20,9 @@ const Login = () => {
       );
 
       if (res.documents.length === 0) {
-        navigate("/register");
+        window.location.href = "/register";
       } else {
-        navigate("/dashboard");
+        window.location.href = "/dashboard";
       }
     } catch (err) {
       alert(err.message);

@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
     await account.deleteSession("current");
     setUser(null);
     setProfile(null);
-    navigate("/login");
+    // Don't navigate here - let the component handle navigation
   };
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, logout }}>
+    <AuthContext.Provider value={{ user, profile, userProfile: profile, loading, logout }}>
       {!loading && children}
     </AuthContext.Provider>
   );

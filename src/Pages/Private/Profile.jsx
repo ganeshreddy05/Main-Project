@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { databases, ID, Query } from "@/services/appwriteConfig";
 import { useAuth } from "@/context/useAuth";
-import  useCity  from "@/context/useCity";
+import useCity from "@/context/useCity";
+import { statesData } from "@/states/states";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,8 @@ const Profile = () => {
 
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [district, setDistrict] = useState("");
 
   /* ---------------- FETCH PROFILE ---------------- */
   const { data: profile, isLoading } = useQuery({
@@ -34,6 +37,8 @@ const Profile = () => {
     if (profile) {
       setPhone(profile.phone || "");
       setCity(profile.city || "");
+      setState(profile.state || "");
+      setDistrict(profile.district || "");
     }
   }, [profile]);
 
@@ -46,6 +51,8 @@ const Profile = () => {
         email: user.email,
         phone,
         city,
+        state,
+        district,
       };
 
       if (profile) {
@@ -70,13 +77,15 @@ const Profile = () => {
       alert("Profile saved successfully ✅");
       updateCity(city); // update CityContext
       queryClient.invalidateQueries(["profile"]);
+      // Invalidate dashboard queries to refresh reports
+      queryClient.invalidateQueries(["dashboard-road-reports"]);
     },
   });
 
   if (isLoading) return <p>Loading profile...</p>;
 
   return (
-    <div className="max-w-xl bg-white p-6 rounded-xl shadow">
+    <div className="max-w-2xl bg-white p-6 rounded-xl shadow">
       <h2 className="text-2xl font-bold mb-6 text-indigo-700">My Profile</h2>
 
       {/* READ ONLY INFO */}
@@ -102,6 +111,45 @@ const Profile = () => {
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />
+
+        {/* STATE SELECTOR */}
+        <div>
+          <label className="block text-sm font-medium mb-2">State</label>
+          <select
+            className="border p-3 rounded-xl w-full"
+            value={state}
+            onChange={(e) => {
+              setState(e.target.value);
+              setDistrict(""); // Reset district when state changes
+            }}
+          >
+            <option value="">Select State</option>
+            {Object.keys(statesData).map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* DISTRICT SELECTOR */}
+        {state && (
+          <div>
+            <label className="block text-sm font-medium mb-2">District</label>
+            <select
+              className="border p-3 rounded-xl w-full"
+              value={district}
+              onChange={(e) => setDistrict(e.target.value)}
+            >
+              <option value="">Select District</option>
+              {statesData[state]?.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <Button
           className="w-full bg-indigo-600"

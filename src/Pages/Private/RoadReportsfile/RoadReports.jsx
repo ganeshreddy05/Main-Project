@@ -1,12 +1,34 @@
 import { useState } from "react";
-import statesData from "@/states/states.js";
-
-import CreateRoadReport from "./CreateRoadReport";
-
+import { useQuery } from "@tanstack/react-query";
+import { databases, Query } from "@/services/appwriteConfig";
+import { statesData } from "@/states/states";
+import RoadReportCard from "./RoadReportCard";
 
 const RoadReports = () => {
   const [selectedState, setSelectedState] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
+
+  const { data: reports = [], isLoading } = useQuery({
+    queryKey: ["road-reports", selectedState, selectedDistrict],
+    enabled: !!selectedDistrict,
+    queryFn: async () => {
+      // Fetch all reports and filter client-side for case-insensitive matching
+      const res = await databases.listDocuments(
+        import.meta.env.VITE_DATABASE_ID,
+        import.meta.env.VITE_ROAD_REPORTS_COLLECTION_ID,
+        [
+          Query.orderDesc("$createdAt"),
+          Query.limit(100), // Get more to filter client-side
+        ]
+      );
+      // Filter case-insensitively for both state and district
+      return res.documents.filter(
+        doc =>
+          doc.state?.toLowerCase() === selectedState?.toLowerCase() &&
+          doc.district?.toLowerCase() === selectedDistrict?.toLowerCase()
+      );
+    },
+  });
 
   return (
     <div className="p-6 space-y-6">
@@ -16,7 +38,6 @@ const RoadReports = () => {
       {/* STATES */}
       <div className="bg-white p-5 rounded-2xl shadow">
         <h2 className="font-semibold mb-3">Select State</h2>
-
         <div className="grid grid-cols-3 gap-4">
           {Object.keys(statesData).map((state) => (
             <button
@@ -25,11 +46,10 @@ const RoadReports = () => {
                 setSelectedState(state);
                 setSelectedDistrict("");
               }}
-              className={`p-3 rounded-xl transition font-medium ${
-                selectedState === state
-                  ? "bg-indigo-600 text-white"
-                  : "bg-indigo-100 hover:bg-indigo-200"
-              }`}
+              className={`p-3 rounded-xl transition font-medium ${selectedState === state
+                ? "bg-indigo-600 text-white"
+                : "bg-indigo-100 hover:bg-indigo-200"
+                }`}
             >
               {state}
             </button>
@@ -41,17 +61,15 @@ const RoadReports = () => {
       {selectedState && (
         <div className="bg-white p-5 rounded-2xl shadow">
           <h2 className="font-semibold mb-3">Select District</h2>
-
           <div className="grid grid-cols-4 gap-4">
             {statesData[selectedState].map((district) => (
               <button
                 key={district}
                 onClick={() => setSelectedDistrict(district)}
-                className={`p-3 rounded-xl transition font-medium ${
-                  selectedDistrict === district
-                    ? "bg-green-600 text-white"
-                    : "bg-green-100 hover:bg-green-200"
-                }`}
+                className={`p-3 rounded-xl transition font-medium ${selectedDistrict === district
+                  ? "bg-green-600 text-white"
+                  : "bg-green-100 hover:bg-green-200"
+                  }`}
               >
                 {district}
               </button>
@@ -60,12 +78,23 @@ const RoadReports = () => {
         </div>
       )}
 
-      {/* FORM */}
+      {/* REPORTS LIST */}
       {selectedDistrict && (
-        <CreateRoadReport
-          state={selectedState}
-          district={selectedDistrict}
-        />
+        <>
+          <h2 className="text-xl font-bold">
+            Reports in {selectedDistrict}, {selectedState}
+          </h2>
+
+          {isLoading && <p>Loading...</p>}
+
+          <div className="max-w-2xl space-y-4">
+            {reports
+              .sort((a, b) => (b.likes || 0) - (a.likes || 0))
+              .map((report) => (
+                <RoadReportCard key={report.$id} report={report} />
+              ))}
+          </div>
+        </>
       )}
 
     </div>

@@ -10,4 +10,4 @@
   UP: ["Lucknow", "Kanpur"],
   MP: ["Bhopal", "Indore"]
 };
-export default statesData;
+export  {statesData};
