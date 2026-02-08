@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { account, databases } from "@/services/appwriteConfig";
-import { Shield, Mail, Lock, Eye, EyeOff, ArrowLeft, AlertCircle } from "lucide-react";
+import { Building2, Mail, Lock, Eye, EyeOff, ArrowLeft, AlertCircle } from "lucide-react";
 import { Query } from "appwrite";
 
 const MLALogin = () => {
@@ -80,8 +80,8 @@ const MLALogin = () => {
                 <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl mb-4">
-                            <Shield className="w-8 h-8 text-white" />
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-2xl mb-4">
+                            <Building2 className="w-8 h-8 text-white" />
                         </div>
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">MLA Portal</h1>
                         <p className="text-gray-600">Access your constituency dashboard</p>

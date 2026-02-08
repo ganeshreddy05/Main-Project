@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { account, databases } from "@/services/appwriteConfig";
-import { Shield, Mail, Lock, Eye, EyeOff, ArrowLeft, AlertCircle } from "lucide-react";
+import { Settings, Shield, Mail, Lock, Eye, EyeOff, ArrowLeft, AlertCircle } from "lucide-react";
 import { Query } from "appwrite";
 
 const AdminLogin = () => {
@@ -80,8 +80,8 @@ const AdminLogin = () => {
                 <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl mb-4">
-                            <Shield className="w-8 h-8 text-white" />
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-700 rounded-2xl mb-4">
+                            <Settings className="w-8 h-8 text-white" />
                         </div>
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Portal</h1>
                         <p className="text-gray-600">Secure system access</p>

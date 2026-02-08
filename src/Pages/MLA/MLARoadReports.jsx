@@ -123,11 +123,11 @@ const MLARoadReports = () => {
         setSelectedReport(report);
         setShowModal(true);
         // Pre-fill if there's an existing response
-        if (report.mlaResponseMessage) {
+        if (report.mlaResponse) {
             setResponseData({
-                status: report.mlaResponseStatus || "",
-                message: report.mlaResponseMessage || "",
-                expectedDate: report.expectedCompletionDate?.split('T')[0] || "",
+                status: report.mlaResponse.responseStatus || "",
+                message: report.mlaResponse.responseMessage || "",
+                expectedDate: report.mlaResponse.expectedCompletionDate?.split('T')[0] || "",
             });
         }
     };
@@ -291,19 +291,19 @@ const MLARoadReports = () => {
                                 )}
 
                                 {/* MLA Response Section */}
-                                {report.mlaResponseMessage && (
+                                {report.mlaResponse && (
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 space-y-2">
                                         <div className="flex items-center gap-2">
                                             <MessageSquare className="w-4 h-4 text-emerald-700" />
                                             <span className="text-xs font-semibold text-emerald-900">Your Response</span>
                                         </div>
                                         <p className="text-sm text-emerald-800 line-clamp-2">
-                                            {report.mlaResponseMessage}
+                                            {report.mlaResponse.responseMessage}
                                         </p>
-                                        {report.expectedCompletionDate && (
+                                        {report.mlaResponse.expectedCompletionDate && (
                                             <div className="flex items-center gap-1 text-xs text-emerald-700">
                                                 <Calendar className="w-3 h-3" />
-                                                <span>Expected: {new Date(report.expectedCompletionDate).toLocaleDateString()}</span>
+                                                <span>Expected: {new Date(report.mlaResponse.expectedCompletionDate).toLocaleDateString()}</span>
                                             </div>
                                         )}
                                     </div>
@@ -337,7 +337,7 @@ const MLARoadReports = () => {
                                     className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-emerald-700 hover:to-teal-700 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
                                 >
                                     <MessageSquare className="w-4 h-4" />
-                                    <span>{report.mlaResponseMessage ? "Update Response" : "Add Response"}</span>
+                                    <span>{report.mlaResponse ? "Update Response" : "Add Response"}</span>
                                 </button>
                             </div>
                         </div>

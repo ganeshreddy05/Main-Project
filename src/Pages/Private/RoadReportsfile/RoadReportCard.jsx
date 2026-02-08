@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { databases } from "@/services/appwriteConfig";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { databases, Query } from "@/services/appwriteConfig";
 import { useAuth } from "@/context/useAuth";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Heart, MapPin, Navigation } from "lucide-react";
+import { Heart, MapPin, Navigation, MessageSquare, Calendar } from "lucide-react";
 
 const RoadReportCard = ({ report, showActions = false }) => {
   const { user } = useAuth();
@@ -12,6 +12,23 @@ const RoadReportCard = ({ report, showActions = false }) => {
 
   // Track liked state locally (since we're not using likedBy array anymore)
   const [isLiked, setIsLiked] = useState(false);
+
+  // Fetch MLA response for this report
+  const { data: mlaResponse } = useQuery({
+    queryKey: ["mla-response", report.$id],
+    queryFn: async () => {
+      const res = await databases.listDocuments(
+        import.meta.env.VITE_DATABASE_ID,
+        import.meta.env.VITE_MLA_RESPONSES_COLLECTION_ID,
+        [
+          Query.equal("roadReportId", report.$id),
+          Query.orderDesc("$createdAt"),
+          Query.limit(1)
+        ]
+      );
+      return res.documents[0] || null;
+    },
+  });
 
   // Condition badge colors - more vibrant
   const conditionStyles = {
@@ -223,6 +240,34 @@ const RoadReportCard = ({ report, showActions = false }) => {
             <p className="leading-relaxed text-gray-800">{report.description}</p>
           </div>
         )}
+
+        {/* MLA Response Section */}
+        {mlaResponse && (
+          <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-lg p-3 space-y-2 shadow-sm">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="w-4 h-4 text-emerald-700" />
+              <span className="text-xs font-bold text-emerald-900">MLA Response</span>
+              <span className="ml-auto px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-200 text-emerald-800">
+                {mlaResponse.responseStatus}
+              </span>
+            </div>
+            <div className="bg-white/60 rounded px-2 py-2">
+              <p className="text-xs text-emerald-900 font-medium">
+                {mlaResponse.responseMessage}
+              </p>
+            </div>
+            {mlaResponse.expectedCompletionDate && (
+              <div className="flex items-center gap-1 text-xs text-emerald-700">
+                <Calendar className="w-3 h-3" />
+                <span className="font-medium">Expected: {new Date(mlaResponse.expectedCompletionDate).toLocaleDateString()}</span>
+              </div>
+            )}
+            <div className="text-xs text-emerald-600">
+              <span className="font-semibold">{mlaResponse.mlaName}</span> • {mlaResponse.mlaDistrict}
+            </div>
+          </div>
+        )}
+
 
         {/* Actions Row */}
         <div className="flex items-center justify-between gap-2 pt-1">

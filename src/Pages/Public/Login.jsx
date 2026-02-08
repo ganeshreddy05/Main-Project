@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { account, databases, Query } from "@/services/appwriteConfig";
 import { useNavigate, Link } from "react-router-dom";
-import { Mail, Lock, LogIn, MapIcon } from "lucide-react";
+import { Mail, Lock, LogIn, Users } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -38,8 +38,8 @@ const Login = () => {
       <div className="w-full max-w-md">
         {/* Logo & Title */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl shadow-lg mb-4">
-            <MapIcon className="w-9 h-9 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl shadow-lg mb-4">
+            <Users className="w-9 h-9 text-white" />
           </div>
           <h1 className="text-3xl font-semibold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent mb-2">
             Welcome Back
