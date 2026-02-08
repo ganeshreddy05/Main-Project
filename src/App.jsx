@@ -37,6 +37,8 @@ import MLALogin from "@/Pages/MLA/MLALogin";
 import MLARegister from "@/Pages/MLA/MLARegister";
 import MLADashboard from "@/Pages/MLA/MLADashboard";
 import MLADashboardHome from "@/Pages/MLA/MLADashboardHome";
+import MLARoadReports from "@/Pages/MLA/MLARoadReports";
+import MLADistrictReports from "@/Pages/MLA/MLADistrictReports";
 
 
 const App = () => {
@@ -61,6 +63,8 @@ const App = () => {
         }
       >
         <Route index element={<MLADashboardHome />} />
+        <Route path="district-reports" element={<MLADistrictReports />} />
+        <Route path="road-reports" element={<MLARoadReports />} />
       </Route>
 
       {/* ADMIN ROUTES - Only accessible by users with role="admin" */}

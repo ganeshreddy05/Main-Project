@@ -18,7 +18,7 @@ const AdminDashboard = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/"); // Go to home page
+      navigate("/");
     } catch (error) {
       console.error("Logout error:", error);
       // Force logout anyway
@@ -42,11 +42,11 @@ const AdminDashboard = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-br from-red-500 to-orange-600 p-2 rounded-xl">
+              <div className="bg-slate-700 p-2 rounded-lg">
                 <Shield className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Admin Portal</h1>
+                <h1 className="text-lg font-semibold text-gray-900">Admin Portal</h1>
                 <p className="text-xs text-gray-500">Turn The Wheel</p>
               </div>
             </div>
@@ -54,19 +54,19 @@ const AdminDashboard = () => {
             {/* Right Side */}
             <div className="flex items-center gap-4">
               {/* Notifications */}
-              <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">
+              <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-md transition">
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                <span className="absolute top-1 right-1 w-2 h-2 bg-slate-600 rounded-full"></span>
               </button>
 
               {/* Admin Info */}
               <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
                 <div className="text-right">
                   <p className="text-sm font-semibold text-gray-900">{profile?.name}</p>
-                  <p className="text-xs text-red-600">Administrator</p>
+                  <p className="text-xs text-slate-700">Administrator</p>
                 </div>
-                <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">
+                <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
+                  <span className="text-white font-semibold text-sm">
                     {profile?.name?.charAt(0).toUpperCase()}
                   </span>
                 </div>
@@ -75,7 +75,7 @@ const AdminDashboard = () => {
               {/* Logout */}
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition"
               >
                 <LogOut className="w-4 h-4" />
                 <span className="text-sm font-medium">Logout</span>
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
       <div className="flex">
         {/* Sidebar */}
         <aside className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-73px)] sticky top-[73px]">
-          <nav className="p-4 space-y-2">
+          <nav className="p-4 space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -98,16 +98,16 @@ const AdminDashboard = () => {
                   to={item.path}
                   end={item.path === "/admin/dashboard"}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
-                      ? "bg-gradient-to-r from-red-500 to-orange-600 text-white shadow-md"
+                    `flex items-center gap-3 px-4 py-2.5 rounded-md transition ${isActive
+                      ? "bg-slate-50 text-slate-700 font-medium"
                       : "text-gray-700 hover:bg-gray-100"
                     }`
                   }
                 >
                   {({ isActive }) => (
                     <>
-                      <Icon className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-500"}`} />
-                      <span className="font-medium">{item.label}</span>
+                      <Icon className={`w-5 h-5 ${isActive ? "text-slate-700" : "text-gray-500"}`} />
+                      <span>{item.label}</span>
                     </>
                   )}
                 </NavLink>

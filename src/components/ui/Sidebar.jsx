@@ -1,66 +1,74 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import authService from "@/services/authService";
+import { Home, AlertCircle, Briefcase, MapIcon, History, User, LogOut } from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
 
   const logoutHandler = async () => {
     await authService.logout();
-    navigate("/login");
+    navigate("/");
   };
 
-  const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 rounded-xl transition font-medium
-     ${
-       isActive
-         ? "bg-indigo-100 text-indigo-700 shadow-sm"
-         : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
-     }`;
+  const navItems = [
+    { to: "/dashboard", label: "Dashboard", icon: Home, end: true },
+    { to: "/dashboard/help-requests", label: "Help Requests", icon: AlertCircle },
+    { to: "/dashboard/travel-requests", label: "Travel Requests", icon: Briefcase },
+    { to: "/dashboard/road-reports", label: "Road Reports", icon: MapIcon },
+    { to: "/dashboard/my-history", label: "My History", icon: History },
+    { to: "/dashboard/profile", label: "Profile", icon: User },
+  ];
 
   return (
-    <aside className="h-screen w-64 bg-gradient-to-b from-slate-50 to-slate-100 p-4 shadow-lg rounded-r-3xl">
+    <aside className="h-screen w-64 bg-gradient-to-b from-emerald-50 via-white to-emerald-50/30 border-r border-gray-200 p-4 flex flex-col shadow-sm">
       {/* Logo */}
       <div className="mb-8 px-2">
-        <h2 className="text-2xl font-bold text-indigo-700">
-          Turn The Wheel
-        </h2>
-        <p className="text-xs text-slate-500">Travel & Safety Dashboard</p>
+        <div className="flex items-center gap-2 mb-1">
+          <div className="w-8 h-8 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center shadow-md">
+            <MapIcon className="w-5 h-5 text-white" />
+          </div>
+          <h2 className="text-xl font-semibold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent">
+            Turn The Wheel
+          </h2>
+        </div>
+        <p className="text-xs text-gray-500 ml-10">Travel & Safety Portal</p>
       </div>
 
       {/* Navigation */}
-      <nav className="space-y-2">
-        <NavLink to="/dashboard" end className={linkClass}>
-          🏠 Dashboard
-        </NavLink>
-
-        <NavLink to="/dashboard/help-requests" className={linkClass}>
-          🚨 Help Requests
-        </NavLink>
-
-        <NavLink to="/dashboard/travel-requests" className={linkClass}>
-          🧳 Travel Requests
-        </NavLink>
-
-        <NavLink to="/dashboard/road-reports" className={linkClass}>
-          🛣 Road Reports
-        </NavLink>
-
-        <NavLink to="/dashboard/my-history" className={linkClass}>
-          📜 My History
-        </NavLink>
-
-        <NavLink to="/dashboard/profile" className={linkClass}>
-          👤 Profile
-        </NavLink>
+      <nav className="flex-1 space-y-1">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive
+                  ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md transform scale-[1.02]"
+                  : "text-gray-700 hover:bg-emerald-50 hover:text-emerald-700"
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <Icon className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-500"}`} />
+                  <span className="font-medium">{item.label}</span>
+                </>
+              )}
+            </NavLink>
+          );
+        })}
       </nav>
 
       {/* Logout */}
-      <div className="mt-auto pt-6">
+      <div className="pt-4 border-t border-gray-200">
         <button
           onClick={logoutHandler}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-rose-600 hover:bg-rose-100 transition font-medium"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition-all duration-200 font-medium"
         >
-          🚪 Logout
+          <LogOut className="w-5 h-5" />
+          <span>Logout</span>
         </button>
       </div>
     </aside>

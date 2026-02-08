@@ -17,32 +17,44 @@ import {
 const MLADashboardHome = () => {
     const { profile } = useContext(AuthContext);
 
-    // Fetch road reports from MLA's district
+    // Fetch road reports from MLA's district (case-insensitive)
     const { data: roadReports = [], isLoading: loadingReports } = useQuery({
         queryKey: ["mla-road-reports", profile?.district],
         queryFn: async () => {
             if (!profile?.district) return [];
+
+            // Fetch all reports and filter client-side for case-insensitive matching
             const res = await databases.listDocuments(
                 import.meta.env.VITE_DATABASE_ID,
                 import.meta.env.VITE_ROAD_REPORTS_COLLECTION_ID,
-                [Query.equal("district", profile.district), Query.orderDesc("$createdAt")]
+                [Query.orderDesc("$createdAt"), Query.limit(100)]
             );
-            return res.documents;
+
+            // Filter case-insensitively
+            return res.documents.filter(
+                doc => doc.district?.toLowerCase() === profile.district?.toLowerCase()
+            );
         },
         enabled: !!profile?.district,
     });
 
-    // Fetch help requests from MLA's district
+    // Fetch help requests from MLA's district (case-insensitive)
     const { data: helpRequests = [], isLoading: loadingRequests } = useQuery({
         queryKey: ["mla-help-requests", profile?.district],
         queryFn: async () => {
             if (!profile?.district) return [];
+
+            // Fetch all requests and filter client-side for case-insensitive matching
             const res = await databases.listDocuments(
                 import.meta.env.VITE_DATABASE_ID,
                 import.meta.env.VITE_HELP_REQUESTS_COLLECTION_ID,
-                [Query.equal("district", profile.district), Query.orderDesc("$createdAt")]
+                [Query.orderDesc("$createdAt"), Query.limit(100)]
             );
-            return res.documents;
+
+            // Filter case-insensitively
+            return res.documents.filter(
+                doc => doc.district?.toLowerCase() === profile.district?.toLowerCase()
+            );
         },
         enabled: !!profile?.district,
     });
@@ -67,8 +79,8 @@ const MLADashboardHome = () => {
         {
             label: "Pending Issues",
             value:
-                roadReports.filter((r) => r.status === "pending").length +
-                helpRequests.filter((h) => h.status === "pending").length,
+                roadReports.filter((r) => r.status?.toUpperCase() === "PENDING" || r.status?.toUpperCase() === "ACTIVE").length +
+                helpRequests.filter((h) => h.status?.toUpperCase() === "PENDING" || h.status?.toUpperCase() === "ACTIVE").length,
             icon: Clock,
             color: "bg-yellow-500",
             bgColor: "bg-yellow-50",
@@ -77,8 +89,8 @@ const MLADashboardHome = () => {
         {
             label: "Resolved Issues",
             value:
-                roadReports.filter((r) => r.status === "resolved").length +
-                helpRequests.filter((h) => h.status === "resolved").length,
+                roadReports.filter((r) => r.status?.toUpperCase() === "RESOLVED").length +
+                helpRequests.filter((h) => h.status?.toUpperCase() === "RESOLVED").length,
             icon: CheckCircle,
             color: "bg-green-500",
             bgColor: "bg-green-50",
@@ -142,8 +154,8 @@ const MLADashboardHome = () => {
                             <div className="w-px bg-purple-300"></div>
                             <div>
                                 <div className="text-2xl font-bold">
-                                    {roadReports.filter((r) => r.status === "resolved").length +
-                                        helpRequests.filter((h) => h.status === "resolved").length}
+                                    {roadReports.filter((r) => r.status?.toUpperCase() === "RESOLVED").length +
+                                        helpRequests.filter((h) => h.status?.toUpperCase() === "RESOLVED").length}
                                 </div>
                                 <div className="text-sm text-purple-100">Issues Resolved</div>
                             </div>
@@ -186,10 +198,10 @@ const MLADashboardHome = () => {
                                     <div>
                                         <span
                                             className={`px-3 py-1 rounded-full text-xs font-medium ${report.status === "resolved"
-                                                    ? "bg-green-100 text-green-700"
-                                                    : report.status === "in-progress"
-                                                        ? "bg-blue-100 text-blue-700"
-                                                        : "bg-yellow-100 text-yellow-700"
+                                                ? "bg-green-100 text-green-700"
+                                                : report.status === "in-progress"
+                                                    ? "bg-blue-100 text-blue-700"
+                                                    : "bg-yellow-100 text-yellow-700"
                                                 }`}
                                         >
                                             {report.status}
@@ -206,7 +218,10 @@ const MLADashboardHome = () => {
             <div className="bg-white rounded-xl border border-gray-200 p-6">
                 <h2 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <button className="p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition text-left">
+                    <button
+                        onClick={() => window.location.href = "/mla/dashboard/road-reports"}
+                        className="p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition text-left"
+                    >
                         <FileText className="w-6 h-6 text-purple-600 mb-2" />
                         <div className="font-semibold text-gray-900">View All Reports</div>
                         <div className="text-sm text-gray-600">See all road reports in your area</div>

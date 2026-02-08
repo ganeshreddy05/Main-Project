@@ -94,7 +94,16 @@ const CreateRoadReport = ({ state, district, onSubmitted }) => {
         import.meta.env.VITE_DATABASE_ID,
         import.meta.env.VITE_ROAD_REPORTS_COLLECTION_ID,
         ID.unique(),
-        payload
+        payload,
+        [
+          // Allow the creator to read, update, delete
+          Permission.read(Role.user(user.$id)),
+          Permission.update(Role.user(user.$id)),
+          Permission.delete(Role.user(user.$id)),
+          // Allow ALL authenticated users to read and update (so MLAs can respond)
+          Permission.read(Role.users()),
+          Permission.update(Role.users()),
+        ]
       );
 
       return res; // IMPORTANT for spinner
@@ -109,10 +118,12 @@ const CreateRoadReport = ({ state, district, onSubmitted }) => {
       setFile(null);
       setLocation(null);
 
+      // Invalidate all relevant queries
       queryClient.invalidateQueries(["road-reports"]);
       queryClient.invalidateQueries(["my-road-reports"]);
-      // Refresh dashboard counts and recent reports for the user's district
       queryClient.invalidateQueries(["dashboard-road-reports"]);
+      // Invalidate MLA queries so reports show up immediately on MLA dashboard
+      queryClient.invalidateQueries(["mla-road-reports"]);
 
       // notify parent (optional)
       if (typeof onSubmitted === "function") onSubmitted();

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { MapPin, Users, Car, Shield, X, ChevronDown } from "lucide-react";
+import { MapPin, Users, Car, Shield, ChevronDown } from "lucide-react";
 
 const LandingPage = () => {
     const [showLoginMenu, setShowLoginMenu] = useState(false);
@@ -10,22 +10,16 @@ const LandingPage = () => {
             icon: MapPin,
             title: "Road Reports",
             description: "Report road conditions, potholes, and hazards. Help make your community safer.",
-            color: "bg-blue-500",
-            lightColor: "bg-blue-50",
         },
         {
             icon: Users,
             title: "Help Requests",
             description: "Request or offer help to fellow travelers. Build a supportive community.",
-            color: "bg-green-500",
-            lightColor: "bg-green-50",
         },
         {
             icon: Car,
             title: "Travel Requests",
             description: "Find travel companions, share rides, and make journeys more enjoyable.",
-            color: "bg-orange-500",
-            lightColor: "bg-orange-50",
         },
     ];
 
@@ -34,34 +28,31 @@ const LandingPage = () => {
             title: "Login as Citizen",
             description: "Report issues and help your community",
             link: "/login",
-            color: "bg-blue-500 hover:bg-blue-600",
         },
         {
             title: "Login as MLA",
             description: "Access constituency reports",
             link: "/mla/login",
-            color: "bg-purple-500 hover:bg-purple-600",
         },
         {
             title: "Login as Admin",
             description: "Manage system",
             link: "/admin/login",
-            color: "bg-red-500 hover:bg-red-600",
         },
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+        <div className="min-h-screen bg-gray-50">
             {/* Header */}
-            <header className="bg-white shadow-sm sticky top-0 z-50">
+            <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
                 <div className="container mx-auto px-6 py-4">
                     <div className="flex justify-between items-center">
                         {/* Logo */}
                         <div className="flex items-center gap-3">
-                            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-2 rounded-xl">
+                            <div className="bg-gradient-to-br from-emerald-600 to-teal-600 p-2 rounded-lg shadow-md">
                                 <MapPin className="w-6 h-6 text-white" />
                             </div>
-                            <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                            <h1 className="text-xl font-semibold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent">
                                 Turn The Wheel
                             </h1>
                         </div>
@@ -72,7 +63,7 @@ const LandingPage = () => {
                             <div className="relative">
                                 <button
                                     onClick={() => setShowLoginMenu(!showLoginMenu)}
-                                    className="px-6 py-2 bg-white border-2 border-indigo-500 text-indigo-600 rounded-lg hover:bg-indigo-50 transition font-semibold flex items-center gap-2"
+                                    className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition font-medium flex items-center gap-2"
                                 >
                                     Login
                                     <ChevronDown className={`w-4 h-4 transition-transform ${showLoginMenu ? 'rotate-180' : ''}`} />
@@ -88,10 +79,10 @@ const LandingPage = () => {
                                         />
 
                                         {/* Dropdown */}
-                                        <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
-                                            <div className="p-4 bg-gradient-to-r from-indigo-500 to-purple-600">
-                                                <h3 className="text-white font-bold text-lg">Choose Login Type</h3>
-                                                <p className="text-indigo-100 text-sm">Select your role to continue</p>
+                                        <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
+                                            <div className="p-3 bg-gray-50 border-b border-gray-200">
+                                                <h3 className="text-gray-900 font-semibold text-sm">Choose Login Type</h3>
+                                                <p className="text-gray-600 text-xs">Select your role to continue</p>
                                             </div>
 
                                             <div className="p-2">
@@ -100,17 +91,17 @@ const LandingPage = () => {
                                                         key={index}
                                                         to={option.link}
                                                         onClick={() => setShowLoginMenu(false)}
-                                                        className="block p-4 hover:bg-gray-50 rounded-lg transition group"
+                                                        className="block p-3 hover:bg-gray-50 rounded-md transition"
                                                     >
                                                         <div className="flex items-center gap-3">
-                                                            <div className={`w-10 h-10 ${option.color} rounded-lg flex items-center justify-center text-white`}>
+                                                            <div className="w-10 h-10 bg-blue-700 rounded-md flex items-center justify-center text-white">
                                                                 <Shield className="w-5 h-5" />
                                                             </div>
                                                             <div className="flex-1">
-                                                                <h4 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition">
+                                                                <h4 className="font-medium text-gray-900 text-sm">
                                                                     {option.title}
                                                                 </h4>
-                                                                <p className="text-xs text-gray-500">{option.description}</p>
+                                                                <p className="text-xs text-gray-600">{option.description}</p>
                                                             </div>
                                                         </div>
                                                     </Link>
@@ -124,7 +115,7 @@ const LandingPage = () => {
                             {/* Register Button */}
                             <Link
                                 to="/register"
-                                className="px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition font-semibold"
+                                className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg hover:from-emerald-700 hover:to-teal-700 shadow-md hover:shadow-lg transition-all font-medium"
                             >
                                 Register
                             </Link>
@@ -134,14 +125,11 @@ const LandingPage = () => {
             </header>
 
             {/* Hero Section */}
-            <section className="container mx-auto px-6 py-20 text-center">
-                <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                    Building Better
-                    <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                        Communities Together
-                    </span>
+            <section className="container mx-auto px-6 py-16 text-center">
+                <h2 className="text-4xl md:text-5xl font-semibold text-gray-900 mb-4">
+                    Building Better Communities Together
                 </h2>
-                <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
                     Report road issues, request help, and connect with your community.
                     Join thousands making a real difference in road safety.
                 </p>
@@ -154,8 +142,8 @@ const LandingPage = () => {
                         { label: "Resolved", value: "15K+" },
                         { label: "Impact", value: "98%" },
                     ].map((stat, index) => (
-                        <div key={index} className="bg-white rounded-xl p-6 shadow-md">
-                            <div className="text-3xl font-bold text-indigo-600">{stat.value}</div>
+                        <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="text-3xl font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">{stat.value}</div>
                             <div className="text-sm text-gray-600 mt-1">{stat.label}</div>
                         </div>
                     ))}
@@ -163,25 +151,25 @@ const LandingPage = () => {
             </section>
 
             {/* Features Section */}
-            <section className="container mx-auto px-6 py-20">
-                <div className="text-center mb-16">
-                    <h3 className="text-4xl font-bold text-gray-900 mb-4">Our Features</h3>
-                    <p className="text-xl text-gray-600">Everything you need to make a difference</p>
+            <section className="container mx-auto px-6 py-16">
+                <div className="text-center mb-12">
+                    <h3 className="text-3xl font-semibold text-gray-900 mb-3">Our Features</h3>
+                    <p className="text-lg text-gray-600">Everything you need to make a difference</p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-3 gap-6">
                     {features.map((feature, index) => {
                         const Icon = feature.icon;
                         return (
                             <div
                                 key={index}
-                                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group hover:-translate-y-2"
+                                className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all duration-200"
                             >
-                                <div className={`${feature.color} w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition`}>
-                                    <Icon className="w-7 h-7 text-white" />
+                                <div className="w-12 h-12 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-lg flex items-center justify-center mb-4">
+                                    <Icon className="w-6 h-6 text-emerald-700" />
                                 </div>
-                                <h4 className="text-2xl font-bold text-gray-900 mb-4">{feature.title}</h4>
-                                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                                <h4 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h4>
+                                <p className="text-gray-600">{feature.description}</p>
                             </div>
                         );
                     })}
@@ -189,15 +177,15 @@ const LandingPage = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="container mx-auto px-6 py-20">
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl p-12 text-center text-white">
-                    <h3 className="text-4xl font-bold mb-4">Ready to Make a Difference?</h3>
-                    <p className="text-xl mb-8 opacity-90">
+            <section className="container mx-auto px-6 py-16">
+                <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl p-12 text-center text-white shadow-xl">
+                    <h3 className="text-3xl font-semibold mb-3">Ready to Make a Difference?</h3>
+                    <p className="text-lg mb-8 text-emerald-50">
                         Join our community and help build safer roads for everyone
                     </p>
                     <Link
                         to="/register"
-                        className="inline-block px-8 py-4 bg-white text-indigo-600 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all"
+                        className="inline-block px-6 py-3 bg-white text-blue-700 rounded-md font-medium hover:bg-gray-100 transition"
                     >
                         Get Started Free →
                     </Link>
@@ -205,18 +193,18 @@ const LandingPage = () => {
             </section>
 
             {/* Footer */}
-            <footer className="bg-gray-900 text-white py-12">
+            <footer className="bg-gray-900 text-white py-8">
                 <div className="container mx-auto px-6 text-center">
-                    <div className="flex items-center justify-center gap-3 mb-4">
-                        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-2 rounded-xl">
+                    <div className="flex items-center justify-center gap-3 mb-3">
+                        <div className="bg-blue-700 p-2 rounded-lg">
                             <MapPin className="w-5 h-5" />
                         </div>
-                        <h1 className="text-xl font-bold">Turn The Wheel</h1>
+                        <h1 className="text-lg font-semibold">Turn The Wheel</h1>
                     </div>
-                    <p className="text-gray-400">
+                    <p className="text-gray-400 text-sm">
                         Making roads safer, one report at a time.
                     </p>
-                    <p className="text-gray-500 text-sm mt-4">
+                    <p className="text-gray-500 text-xs mt-3">
                         &copy; 2026 Turn The Wheel. All rights reserved.
                     </p>
                 </div>
