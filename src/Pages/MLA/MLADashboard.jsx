@@ -1,7 +1,6 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "@/context/AuthProvider";
-// force git change
 
 import {
     LayoutDashboard,
@@ -31,7 +30,7 @@ const MLADashboard = () => {
 
     const navItems = [
         { path: "/mla/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-        { path: "/mla/dashboard/reports", icon: FileText, label: "District Reports" },
+        { path: "/mla/dashboard/district-reports", icon: FileText, label: "District Reports" },
         { path: "/mla/dashboard/help-requests", icon: Users, label: "Help Requests" },
         { path: "/mla/dashboard/profile", icon: Settings, label: "Profile" },
     ];
@@ -44,11 +43,11 @@ const MLADashboard = () => {
                     <div className="flex items-center justify-between">
                         {/* Logo */}
                         <div className="flex items-center gap-3">
-                            <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-2 rounded-xl">
+                            <div className="bg-blue-700 p-2 rounded-lg">
                                 <Shield className="w-6 h-6 text-white" />
                             </div>
                             <div>
-                                <h1 className="text-xl font-bold text-gray-900">MLA Portal</h1>
+                                <h1 className="text-lg font-semibold text-gray-900">MLA Portal</h1>
                                 <p className="text-xs text-gray-500">Turn The Wheel</p>
                             </div>
                         </div>
@@ -56,28 +55,28 @@ const MLADashboard = () => {
                         {/* Right Side */}
                         <div className="flex items-center gap-4">
                             {/* Constituency Badge */}
-                            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-purple-50 border border-purple-200 rounded-lg">
-                                <MapPin className="w-4 h-4 text-purple-600" />
+                            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-md">
+                                <MapPin className="w-4 h-4 text-blue-700" />
                                 <div className="text-right">
-                                    <p className="text-xs text-purple-600 font-medium">Constituency</p>
-                                    <p className="text-sm font-bold text-purple-900">{profile?.district || "N/A"}</p>
+                                    <p className="text-xs text-blue-700 font-medium">Constituency</p>
+                                    <p className="text-sm font-semibold text-blue-900">{profile?.district || "N/A"}</p>
                                 </div>
                             </div>
 
                             {/* Notifications */}
-                            <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">
+                            <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-md transition">
                                 <Bell className="w-5 h-5" />
-                                <span className="absolute top-1 right-1 w-2 h-2 bg-purple-500 rounded-full"></span>
+                                <span className="absolute top-1 right-1 w-2 h-2 bg-blue-600 rounded-full"></span>
                             </button>
 
                             {/* MLA Info */}
                             <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
                                 <div className="text-right">
                                     <p className="text-sm font-semibold text-gray-900">{profile?.name}</p>
-                                    <p className="text-xs text-purple-600">MLA</p>
+                                    <p className="text-xs text-blue-700">MLA</p>
                                 </div>
-                                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
-                                    <span className="text-white font-bold text-sm">
+                                <div className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center">
+                                    <span className="text-white font-semibold text-sm">
                                         {profile?.name?.charAt(0).toUpperCase()}
                                     </span>
                                 </div>
@@ -86,7 +85,7 @@ const MLADashboard = () => {
                             {/* Logout */}
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 px-4 py-2 text-purple-600 hover:bg-purple-50 rounded-lg transition"
+                                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition"
                             >
                                 <LogOut className="w-4 h-4" />
                                 <span className="text-sm font-medium">Logout</span>
@@ -100,7 +99,7 @@ const MLADashboard = () => {
             <div className="flex">
                 {/* Sidebar */}
                 <aside className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-73px)] sticky top-[73px]">
-                    <nav className="p-4 space-y-2">
+                    <nav className="p-4 space-y-1">
                         {navItems.map((item) => {
                             const Icon = item.icon;
                             return (
@@ -109,16 +108,16 @@ const MLADashboard = () => {
                                     to={item.path}
                                     end={item.path === "/mla/dashboard"}
                                     className={({ isActive }) =>
-                                        `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
-                                            ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-md"
+                                        `flex items-center gap-3 px-4 py-2.5 rounded-md transition ${isActive
+                                            ? "bg-blue-50 text-blue-700 font-medium"
                                             : "text-gray-700 hover:bg-gray-100"
                                         }`
                                     }
                                 >
                                     {({ isActive }) => (
                                         <>
-                                            <Icon className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-500"}`} />
-                                            <span className="font-medium">{item.label}</span>
+                                            <Icon className={`w-5 h-5 ${isActive ? "text-blue-700" : "text-gray-500"}`} />
+                                            <span>{item.label}</span>
                                         </>
                                     )}
                                 </NavLink>
