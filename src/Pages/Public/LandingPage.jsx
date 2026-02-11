@@ -32,8 +32,8 @@ const LandingPage = () => {
             color: "bg-blue-600",
         },
         {
-            title: "Login as MLA",
-            description: "Access constituency reports",
+            title: "Login as Government Official",
+            description: "For MLAs and Department Officials",
             link: "/mla/login",
             icon: Building2,
             color: "bg-purple-600",
