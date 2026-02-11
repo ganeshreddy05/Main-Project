@@ -45,6 +45,11 @@ import MLADistrictReports from "@/Pages/MLA/MLADistrictReports";
 import MLAProfile from "@/Pages/MLA/MLAProfile";
 import MLAHelpRequests from "@/Pages/MLA/MLAHelpRequests";
 
+/* Official pages */
+import OfficialDashboard from "@/Pages/Official/OfficialDashboard";
+import OfficialWorkOrders from "@/Pages/Official/OfficialWorkOrders";
+import OfficialProfile from "@/Pages/Official/OfficialProfile";
+
 
 const App = () => {
   return (
@@ -91,6 +96,32 @@ const App = () => {
           <Route path="users" element={<AdminUsers />} />
           <Route path="mla-applications" element={<MLAApplications />} />
         </Route>
+
+        {/* OFFICIAL ROUTES - Only accessible by government officials */}
+        <Route
+          path="/official/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["official"]}>
+              <OfficialDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/official/work-orders"
+          element={
+            <ProtectedRoute allowedRoles={["official"]}>
+              <OfficialWorkOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/official/profile"
+          element={
+            <ProtectedRoute allowedRoles={["official"]}>
+              <OfficialProfile />
+            </ProtectedRoute>
+          }
+        />
 
         {/* PRIVATE DASHBOARD ROUTES - Accessible by citizens and MLAs */}
         <Route

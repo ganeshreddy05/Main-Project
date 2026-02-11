@@ -25,7 +25,18 @@ const Login = () => {
       if (res.documents.length === 0) {
         window.location.href = "/register";
       } else {
-        window.location.href = "/dashboard";
+        const userRole = res.documents[0].role;
+
+        // Redirect based on role
+        if (userRole === "official") {
+          window.location.href = "/official/dashboard";
+        } else if (userRole === "mla") {
+          window.location.href = "/mla/dashboard";
+        } else if (userRole === "admin") {
+          window.location.href = "/admin/dashboard";
+        } else {
+          window.location.href = "/dashboard";
+        }
       }
     } catch (err) {
       alert(err.message);

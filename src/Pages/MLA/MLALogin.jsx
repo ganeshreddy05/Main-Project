@@ -47,8 +47,12 @@ const MLALogin = () => {
                 return;
             }
 
-            // 5. Redirect to MLA dashboard (force full reload)
-            window.location.href = "/mla/dashboard";
+            // 5. Redirect based on role
+            if (profile.role === "official") {
+                window.location.href = "/official/dashboard";
+            } else {
+                window.location.href = "/mla/dashboard";
+            }
         } catch (err) {
             console.error("Login error:", err);
             setError(err.message || "Invalid credentials");

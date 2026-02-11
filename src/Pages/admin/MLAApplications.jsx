@@ -62,20 +62,28 @@ const MLAApplications = () => {
                 // Determine role based on application type
                 const userRole = application.officialType === "DEPARTMENT_OFFICIAL" ? "official" : "mla";
 
+                const userProfileData = {
+                    userId: userAccount.$id,
+                    name: application.name,
+                    email: application.email,
+                    phone: application.phone,
+                    state: application.state,
+                    district: application.constituency,
+                    role: userRole,
+                    status: "active"
+                };
+
+                // Add department and designation for officials
+                if (application.officialType === "DEPARTMENT_OFFICIAL") {
+                    userProfileData.department = application.department;
+                    userProfileData.designation = application.designation || "";
+                }
+
                 await databases.createDocument(
                     import.meta.env.VITE_DATABASE_ID,
                     import.meta.env.VITE_USERS_COLLECTION_ID,
                     userAccount.$id,
-                    {
-                        userId: userAccount.$id,
-                        name: application.name,
-                        email: application.email,
-                        phone: application.phone,
-                        state: application.state,
-                        district: application.constituency,
-                        role: userRole,
-                        status: "active"
-                    }
+                    userProfileData
                 );
 
                 // 5. Update application status

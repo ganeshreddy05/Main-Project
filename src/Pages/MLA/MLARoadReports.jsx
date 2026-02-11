@@ -3,13 +3,16 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { databases, ID } from "@/services/appwriteConfig";
 import { Query } from "appwrite";
 import { AuthContext } from "@/context/AuthProvider";
-import { MapPin, Navigation, AlertCircle, Calendar, User, Image as ImageIcon, MessageSquare, X, Check } from "lucide-react";
+import { MapPin, Navigation, AlertCircle, Calendar, User, Image as ImageIcon, MessageSquare, X, Check, Briefcase } from "lucide-react";
+import AssignToDepartmentModal from "@/components/AssignToDepartmentModal";
+import { createWorkOrder } from "@/services/workOrderService";
 
 const MLARoadReports = () => {
     const { profile, user } = useContext(AuthContext);
     const queryClient = useQueryClient();
     const [selectedReport, setSelectedReport] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [showAssignModal, setShowAssignModal] = useState(false);
     const [responseData, setResponseData] = useState({
         status: "",
         message: "",
@@ -143,6 +146,68 @@ const MLARoadReports = () => {
             data: responseData,
         });
     };
+
+    // Mutation to assign work to department
+    const assignWorkMutation = useMutation({
+        mutationFn: async ({ report, assignmentData }) => {
+            console.log("🔍 Creating work order for report:", report.$id);
+            console.log("📋 Assignment data:", assignmentData);
+
+            // Generate unique work order ID
+            const uniqueWorkOrderId = `WO-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+            // 1. Create work order - Be explicit about fields to avoid unknown attributes
+            const workOrderData = {
+                workOrderId: uniqueWorkOrderId,
+                roadReportId: report.$id,
+                mlaId: user?.$id,
+                mlaName: profile?.name || "Unknown MLA",
+                mlaConstituency: profile?.district || "",
+                assignedDepartment: assignmentData.department,
+                priorityLevel: assignmentData.priority,
+                status: "pending",
+                mlaInstructions: assignmentData.instructions,
+                assignedAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            };
+
+            // Only add estimatedCompletionDate if provided
+            if (assignmentData.estimatedDate) {
+                workOrderData.estimatedCompletionDate = assignmentData.estimatedDate;
+            }
+
+            console.log("📤 Sending work order data:", workOrderData);
+
+            const workOrder = await createWorkOrder(workOrderData);
+            console.log("✅ Work order created successfully:", workOrder.$id);
+
+            return workOrder;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(["mla-all-road-reports"]);
+            queryClient.invalidateQueries(["mla-road-reports"]);
+            setShowAssignModal(false);
+            setSelectedReport(null);
+            alert("Work order assigned successfully! The department will be notified.");
+        },
+        onError: (error) => {
+            console.error("Error assigning work order:", error);
+            alert("Error assigning work order: " + error.message);
+        },
+    });
+
+    const handleOpenAssignModal = (report) => {
+        setSelectedReport(report);
+        setShowAssignModal(true);
+    };
+
+    const handleAssignWork = (assignmentData) => {
+        assignWorkMutation.mutate({
+            report: selectedReport,
+            assignmentData,
+        });
+    };
+
 
     const getConditionColor = (condition) => {
         switch (condition) {
@@ -331,14 +396,26 @@ const MLARoadReports = () => {
                                     </span>
                                 </div>
 
-                                {/* Add/Update Response Button */}
-                                <button
-                                    onClick={() => handleOpenModal(report)}
-                                    className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-emerald-700 hover:to-teal-700 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
-                                >
-                                    <MessageSquare className="w-4 h-4" />
-                                    <span>{report.mlaResponse ? "Update Response" : "Add Response"}</span>
-                                </button>
+                                {/* Action Buttons */}
+                                <div className="grid grid-cols-2 gap-2">
+                                    {/* Add/Update Response Button */}
+                                    <button
+                                        onClick={() => handleOpenModal(report)}
+                                        className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-emerald-700 hover:to-teal-700 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
+                                    >
+                                        <MessageSquare className="w-4 h-4" />
+                                        <span className="text-sm">{report.mlaResponse ? "Update" : "Respond"}</span>
+                                    </button>
+
+                                    {/* Assign to Department Button */}
+                                    <button
+                                        onClick={() => handleOpenAssignModal(report)}
+                                        className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
+                                    >
+                                        <Briefcase className="w-4 h-4" />
+                                        <span className="text-sm">Assign</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     ))}
@@ -469,6 +546,19 @@ const MLARoadReports = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Assignment Modal */}
+            {showAssignModal && selectedReport && (
+                <AssignToDepartmentModal
+                    report={selectedReport}
+                    onClose={() => {
+                        setShowAssignModal(false);
+                        setSelectedReport(null);
+                    }}
+                    onAssign={handleAssignWork}
+                    isLoading={assignWorkMutation.isPending}
+                />
             )}
         </div>
     );
