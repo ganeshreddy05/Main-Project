@@ -41,6 +41,7 @@ import MLADashboardHome from "@/Pages/MLA/MLADashboardHome";
 import MLARoadReports from "@/Pages/MLA/MLARoadReports";
 import MLADistrictReports from "@/Pages/MLA/MLADistrictReports";
 import MLAProfile from "@/Pages/MLA/MLAProfile";
+import MLAHelpRequests from "@/Pages/MLA/MLAHelpRequests";
 
 
 const App = () => {
@@ -67,6 +68,7 @@ const App = () => {
         <Route index element={<MLADashboardHome />} />
         <Route path="district-reports" element={<MLADistrictReports />} />
         <Route path="road-reports" element={<MLARoadReports />} />
+        <Route path="help-requests" element={<MLAHelpRequests />} />
         <Route path="profile" element={<MLAProfile />} />
       </Route>
 
@@ -100,6 +102,7 @@ const App = () => {
 
         {/* Help Requests */}
         <Route path="help-requests" element={<HelpRequests />} />
+        <Route path="help-requests/:id" element={<HelpRequestDetails />} />
 
         {/* Other modules */}
         <Route path="travel-requests" element={<TravelRequests />} />

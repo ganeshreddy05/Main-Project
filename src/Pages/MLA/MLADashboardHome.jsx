@@ -226,7 +226,10 @@ const MLADashboardHome = () => {
                         <div className="font-semibold text-gray-900">View All Reports</div>
                         <div className="text-sm text-gray-600">See all road reports in your area</div>
                     </button>
-                    <button className="p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition text-left">
+                    <button
+                        onClick={() => window.location.href = "/mla/dashboard/help-requests"}
+                        className="p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition text-left"
+                    >
                         <Users className="w-6 h-6 text-purple-600 mb-2" />
                         <div className="font-semibold text-gray-900">Help Requests</div>
                         <div className="text-sm text-gray-600">Manage citizen help requests</div>

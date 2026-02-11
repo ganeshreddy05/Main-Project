@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { account, databases, Query } from "@/services/appwriteConfig";
 import { useNavigate, Link } from "react-router-dom";
-import { Mail, Lock, LogIn, Users } from "lucide-react";
+import { Mail, Lock, LogIn, Users, ArrowLeft } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -38,10 +38,10 @@ const Login = () => {
       <div className="w-full max-w-md">
         {/* Logo & Title */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl shadow-lg mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl shadow-lg mb-4">
             <Users className="w-9 h-9 text-white" />
           </div>
-          <h1 className="text-3xl font-semibold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent mb-2">
             Welcome Back
           </h1>
           <p className="text-gray-600">Sign in to your citizen account</p>
@@ -97,7 +97,10 @@ const Login = () => {
               className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 px-4 rounded-lg font-medium hover:from-emerald-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
-                <span>Signing in...</span>
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Signing in...</span>
+                </>
               ) : (
                 <>
                   <LogIn className="w-5 h-5" />
@@ -118,10 +121,14 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Back to Home */}
+        {/* Back to Home - Enhanced like Admin */}
         <div className="mt-6 text-center">
-          <Link to="/" className="text-sm text-gray-600 hover:text-emerald-600 transition-colors">
-            ← Back to Home
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-emerald-600 hover:bg-gray-100 rounded-lg transition-all font-medium"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Home</span>
           </Link>
         </div>
       </div>
