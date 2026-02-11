@@ -71,10 +71,7 @@ const MLADistrictReports = () => {
             bgGradient: "from-cyan-500 to-blue-600",
             iconBg: "from-cyan-100 to-blue-100",
             iconColor: "text-cyan-700",
-            onClick: () => {
-                // Navigate to help requests page (to be created later)
-                alert("Help Requests page coming soon!");
-            },
+            onClick: () => navigate("/mla/dashboard/help-requests"),
         },
     ];
 

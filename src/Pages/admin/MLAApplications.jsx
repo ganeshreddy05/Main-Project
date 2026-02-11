@@ -5,8 +5,9 @@ import { Query } from "appwrite";
 import {
     FileText, User, Mail, Phone, MapPin, Building2,
     CheckCircle, XCircle, Eye, Filter, Search,
-    AlertCircle, Calendar, Shield, ExternalLink, Clock
+    AlertCircle, Calendar, Shield, ExternalLink, Clock, Briefcase
 } from "lucide-react";
+import { DEPARTMENTS } from "@/constants/departmentConstants";
 
 const MLAApplications = () => {
     const queryClient = useQueryClient();
@@ -58,6 +59,9 @@ const MLAApplications = () => {
                 );
 
                 // 2. Create user profile in users collection
+                // Determine role based on application type
+                const userRole = application.officialType === "DEPARTMENT_OFFICIAL" ? "official" : "mla";
+
                 await databases.createDocument(
                     import.meta.env.VITE_DATABASE_ID,
                     import.meta.env.VITE_USERS_COLLECTION_ID,
@@ -69,12 +73,12 @@ const MLAApplications = () => {
                         phone: application.phone,
                         state: application.state,
                         district: application.constituency,
-                        role: "mla",
+                        role: userRole,
                         status: "active"
                     }
                 );
 
-                // 3. Update application status
+                // 5. Update application status
                 await databases.updateDocument(
                     import.meta.env.VITE_DATABASE_ID,
                     import.meta.env.VITE_MLA_APPLICATIONS_COLLECTION_ID,
@@ -97,7 +101,9 @@ const MLAApplications = () => {
         onSuccess: (data) => {
             queryClient.invalidateQueries(["mla-applications"]);
             setIsModalOpen(false);
-            alert(`✅ Application approved!\n\nThe MLA can now login at /mla/login using:\nEmail: ${data.email}\nPassword: (their original password)`);
+            const loginPath = selectedApplication.officialType === "DEPARTMENT_OFFICIAL" ? "/login" : "/mla/login";
+            const roleLabel = selectedApplication.officialType === "DEPARTMENT_OFFICIAL" ? "Department Official" : "MLA";
+            alert(`✅ Application approved!\n\nThe ${roleLabel} can now login at ${loginPath} using:\nEmail: ${data.email}\nPassword: (their original password)`);
         },
         onError: (error) => {
             alert(`❌ Error: ${error.message}`);
@@ -180,8 +186,8 @@ const MLAApplications = () => {
         <div className="space-y-6">
             {/* Header */}
             <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">MLA Applications</h1>
-                <p className="text-gray-600">Review and manage MLA registration requests</p>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Government Official Applications</h1>
+                <p className="text-gray-600">Review and manage MLA & Department Official registration requests</p>
             </div>
 
             {/* Stats */}
@@ -242,8 +248,9 @@ const MLAApplications = () => {
                             <thead className="bg-gray-50 border-b border-gray-200">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Applicant</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Type</th>
                                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Location</th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Party</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Party/Dept</th>
                                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Applied</th>
                                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
                                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
@@ -267,15 +274,38 @@ const MLAApplications = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
+                                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${app.officialType === "DEPARTMENT_OFFICIAL"
+                                                ? "bg-green-100 text-green-800 border border-green-300"
+                                                : "bg-purple-100 text-purple-800 border border-purple-300"
+                                                }`}>
+                                                {app.officialType === "DEPARTMENT_OFFICIAL" ? (
+                                                    <><Briefcase className="w-3 h-3" /> Official</>
+                                                ) : (
+                                                    <><Shield className="w-3 h-3" /> MLA</>
+                                                )}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4">
                                             <div className="text-sm">
                                                 <div className="font-medium text-gray-900">{app.constituency}</div>
                                                 <div className="text-gray-600">{app.state}</div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <span className="text-sm text-gray-900 font-medium">
-                                                {app.partyName || "—"}
-                                            </span>
+                                            {app.officialType === "DEPARTMENT_OFFICIAL" ? (
+                                                <div className="text-sm">
+                                                    <div className="font-medium text-gray-900">
+                                                        {DEPARTMENTS[app.department]?.label || app.department}
+                                                    </div>
+                                                    {app.designation && (
+                                                        <div className="text-xs text-gray-500">{app.designation}</div>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <span className="text-sm text-gray-900 font-medium">
+                                                    {app.partyName || "—"}
+                                                </span>
+                                            )}
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="text-sm text-gray-600">
@@ -365,8 +395,10 @@ const MLAApplications = () => {
                                         <div className="font-medium text-gray-900">{selectedApplication.phone}</div>
                                     </div>
                                     <div>
-                                        <div className="text-xs text-gray-600 mb-1">Political Party</div>
-                                        <div className="font-medium text-gray-900">{selectedApplication.partyName || "—"}</div>
+                                        <div className="text-xs text-gray-600 mb-1">Official Type</div>
+                                        <div className="font-medium text-gray-900">
+                                            {selectedApplication.officialType === "DEPARTMENT_OFFICIAL" ? "Department Official" : "MLA"}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -375,7 +407,7 @@ const MLAApplications = () => {
                             <div>
                                 <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
                                     <MapPin className="w-4 h-4 text-gray-600" />
-                                    Constituency Information
+                                    {selectedApplication.officialType === "DEPARTMENT_OFFICIAL" ? "Location Information" : "Constituency Information"}
                                 </h3>
                                 <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
                                     <div>
@@ -383,11 +415,50 @@ const MLAApplications = () => {
                                         <div className="font-medium text-gray-900">{selectedApplication.state}</div>
                                     </div>
                                     <div>
-                                        <div className="text-xs text-gray-600 mb-1">Constituency</div>
+                                        <div className="text-xs text-gray-600 mb-1">
+                                            {selectedApplication.officialType === "DEPARTMENT_OFFICIAL" ? "District" : "Constituency"}
+                                        </div>
                                         <div className="font-medium text-gray-900">{selectedApplication.constituency}</div>
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Department Details (for Officials only) */}
+                            {selectedApplication.officialType === "DEPARTMENT_OFFICIAL" && (
+                                <div>
+                                    <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                                        <Briefcase className="w-4 h-4 text-gray-600" />
+                                        Department Information
+                                    </h3>
+                                    <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                                        <div>
+                                            <div className="text-xs text-gray-600 mb-1">Department</div>
+                                            <div className="font-medium text-gray-900 flex items-center gap-2">
+                                                {DEPARTMENTS[selectedApplication.department]?.icon}
+                                                {DEPARTMENTS[selectedApplication.department]?.label || selectedApplication.department}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="text-xs text-gray-600 mb-1">Designation</div>
+                                            <div className="font-medium text-gray-900">{selectedApplication.designation || "—"}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Party Details (for MLAs only) */}
+                            {selectedApplication.officialType !== "DEPARTMENT_OFFICIAL" && selectedApplication.partyName && (
+                                <div>
+                                    <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                                        <Shield className="w-4 h-4 text-gray-600" />
+                                        Political Information
+                                    </h3>
+                                    <div className="bg-gray-50 p-4 rounded-lg">
+                                        <div className="text-xs text-gray-600 mb-1">Political Party</div>
+                                        <div className="font-medium text-gray-900">{selectedApplication.partyName}</div>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* ID Proof */}
                             <div>

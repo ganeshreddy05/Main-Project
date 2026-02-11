@@ -97,13 +97,14 @@ const AdminUsers = () => {
         const configs = {
             citizen: { bg: "bg-blue-100", text: "text-blue-800", border: "border-blue-300" },
             mla: { bg: "bg-purple-100", text: "text-purple-800", border: "border-purple-300" },
+            official: { bg: "bg-green-100", text: "text-green-800", border: "border-green-300" },
             admin: { bg: "bg-red-100", text: "text-red-800", border: "border-red-300" },
         };
         const config = configs[role] || configs.citizen;
 
         return (
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border ${config.bg} ${config.text} ${config.border} text-xs font-medium uppercase`}>
-                {role}
+                {role === "official" ? "Govt Official" : role}
             </span>
         );
     };
@@ -112,8 +113,8 @@ const AdminUsers = () => {
         const isActive = status === "active";
         return (
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-medium ${isActive
-                    ? "bg-green-100 text-green-800 border-green-300"
-                    : "bg-gray-100 text-gray-800 border-gray-300"
+                ? "bg-green-100 text-green-800 border-green-300"
+                : "bg-gray-100 text-gray-800 border-gray-300"
                 }`}>
                 {isActive ? <UserCheck className="w-3.5 h-3.5" /> : <UserX className="w-3.5 h-3.5" />}
                 {status}
@@ -125,7 +126,8 @@ const AdminUsers = () => {
         { label: "Total Users", value: users.length, color: "bg-blue-500", icon: Users },
         { label: "Citizens", value: users.filter(u => u.role === "citizen").length, color: "bg-blue-500", icon: Users },
         { label: "MLAs", value: users.filter(u => u.role === "mla").length, color: "bg-purple-500", icon: Shield },
-        { label: "Active", value: users.filter(u => u.status === "active").length, color: "bg-green-500", icon: UserCheck },
+        { label: "Officials", value: users.filter(u => u.role === "official").length, color: "bg-green-500", icon: Shield },
+        { label: "Active", value: users.filter(u => u.status === "active").length, color: "bg-emerald-500", icon: UserCheck },
     ];
 
     if (isLoading) {
@@ -145,7 +147,7 @@ const AdminUsers = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 {stats.map((stat, idx) => {
                     const Icon = stat.icon;
                     return (
@@ -186,6 +188,7 @@ const AdminUsers = () => {
                             <option value="all">All Roles</option>
                             <option value="citizen">Citizens</option>
                             <option value="mla">MLAs</option>
+                            <option value="official">Govt Officials</option>
                             <option value="admin">Admins</option>
                         </select>
                     </div>
@@ -288,8 +291,8 @@ const AdminUsers = () => {
                                                 <button
                                                     onClick={() => handleToggleStatus(user)}
                                                     className={`p-2 rounded-lg transition ${user.status === "active"
-                                                            ? "text-yellow-600 hover:bg-yellow-50"
-                                                            : "text-green-600 hover:bg-green-50"
+                                                        ? "text-yellow-600 hover:bg-yellow-50"
+                                                        : "text-green-600 hover:bg-green-50"
                                                         }`}
                                                     title={user.status === "active" ? "Deactivate User" : "Activate User"}
                                                 >
@@ -439,8 +442,8 @@ const AdminUsers = () => {
                             <button
                                 onClick={() => handleToggleStatus(selectedUser)}
                                 className={`flex-1 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 ${selectedUser.status === "active"
-                                        ? "bg-white border-2 border-yellow-500 text-yellow-600 hover:bg-yellow-50"
-                                        : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
+                                    ? "bg-white border-2 border-yellow-500 text-yellow-600 hover:bg-yellow-50"
+                                    : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
                                     }`}
                             >
                                 {selectedUser.status === "active" ? (

@@ -40,9 +40,9 @@ const MLALogin = () => {
 
             const profile = userProfile.documents[0];
 
-            // 4. Check if user is MLA
-            if (profile.role !== "mla") {
-                setError("Access denied. This portal is for MLAs only. Your application may still be pending approval.");
+            // 4. Check if user is MLA or Department Official
+            if (profile.role !== "mla" && profile.role !== "official") {
+                setError("Access denied. This portal is for Government Officials only. Your application may still be pending approval.");
                 await account.deleteSession("current");
                 return;
             }
@@ -83,8 +83,8 @@ const MLALogin = () => {
                         <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-2xl mb-4">
                             <Building2 className="w-8 h-8 text-white" />
                         </div>
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2">MLA Portal</h1>
-                        <p className="text-gray-600">Access your constituency dashboard</p>
+                        <h1 className="text-3xl font-bold text-gray-900 mb-2">Government Official Portal</h1>
+                        <p className="text-gray-600">Access your official dashboard</p>
                     </div>
 
                     {/* Error Alert */}
@@ -100,7 +100,7 @@ const MLALogin = () => {
                         {/* Email */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                MLA Email
+                                Official Email
                             </label>
                             <div className="relative">
                                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -155,7 +155,7 @@ const MLALogin = () => {
                                     Verifying...
                                 </span>
                             ) : (
-                                "Access MLA Portal"
+                                "Access Portal"
                             )}
                         </button>
                     </form>
@@ -163,8 +163,8 @@ const MLALogin = () => {
                     {/* Application Link */}
                     <div className="mt-6 text-center">
                         <p className="text-gray-600 text-sm">
-                            Don't have MLA access?{" "}
-                            <Link to="/mla/register" className="text-purple-600 hover:text-purple-700 font-semibold">
+                            Don't have official access?{" "}
+                            <Link to="/register" className="text-purple-600 hover:text-purple-700 font-semibold">
                                 Apply Now
                             </Link>
                         </p>
@@ -173,8 +173,8 @@ const MLALogin = () => {
                     {/* Info Notice */}
                     <div className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
                         <p className="text-xs text-purple-800">
-                            <strong>Note:</strong> This portal is only accessible to approved MLAs.
-                            If you've applied,please wait for admin approval.
+                            <strong>Note:</strong> This portal is only accessible to approved MLAs and Department Officials.
+                            If you've applied, please wait for admin approval.
                         </p>
                     </div>
                 </div>

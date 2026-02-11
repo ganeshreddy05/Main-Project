@@ -1,10 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { Toaster } from "react-hot-toast";
 
 /* Public pages */
 import LandingPage from "@/Pages/Public/LandingPage";
 import Login from "@/Pages/Public/Login";
 import Register from "@/Pages/Public/Register";
+import GovernmentOfficialRegister from "@/Pages/Public/GovernmentOfficialRegister";
 
 /* Dashboard layout */
 import Dashboard from "@/Pages/Private/DashBoard";
@@ -46,86 +48,90 @@ import MLAHelpRequests from "@/Pages/MLA/MLAHelpRequests";
 
 const App = () => {
   return (
-    <Routes>
-      {/* PUBLIC ROUTES */}
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+    <>
+      <Routes>
+        {/* PUBLIC ROUTES */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/government-register" element={<GovernmentOfficialRegister />} />
 
-      {/* MLA ROUTES */}
-      <Route path="/mla/login" element={<MLALogin />} />
-      <Route path="/mla/register" element={<MLARegister />} />
+        {/* MLA ROUTES (kept for backward compatibility) */}
+        <Route path="/mla/login" element={<MLALogin />} />
+        <Route path="/mla/register" element={<MLARegister />} />
 
-      {/* MLA DASHBOARD - Only accessible by MLAs */}
-      <Route
-        path="/mla/dashboard"
-        element={
-          <ProtectedRoute allowedRoles={["mla"]}>
-            <MLADashboard />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<MLADashboardHome />} />
-        <Route path="district-reports" element={<MLADistrictReports />} />
-        <Route path="road-reports" element={<MLARoadReports />} />
-        <Route path="help-requests" element={<MLAHelpRequests />} />
-        <Route path="profile" element={<MLAProfile />} />
-      </Route>
+        {/* MLA DASHBOARD - Only accessible by MLAs */}
+        <Route
+          path="/mla/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["mla"]}>
+              <MLADashboard />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<MLADashboardHome />} />
+          <Route path="district-reports" element={<MLADistrictReports />} />
+          <Route path="road-reports" element={<MLARoadReports />} />
+          <Route path="help-requests" element={<MLAHelpRequests />} />
+          <Route path="profile" element={<MLAProfile />} />
+        </Route>
 
-      {/* ADMIN ROUTES - Only accessible by users with role="admin" */}
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<Navigate to="/admin/dashboard" />} />
-        <Route path="dashboard" element={<AdminHome />} />
-        <Route path="users" element={<AdminUsers />} />
-        <Route path="mla-applications" element={<MLAApplications />} />
-      </Route>
+        {/* ADMIN ROUTES - Only accessible by users with role="admin" */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate to="/admin/dashboard" />} />
+          <Route path="dashboard" element={<AdminHome />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="mla-applications" element={<MLAApplications />} />
+        </Route>
 
-      {/* PRIVATE DASHBOARD ROUTES - Accessible by citizens and MLAs */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute allowedRoles={["citizen", "mla"]}>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      >
-        {/* Dashboard Home */}
-        <Route index element={<DashboardHome />} />
+        {/* PRIVATE DASHBOARD ROUTES - Accessible by citizens and MLAs */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["citizen", "mla"]}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        >
+          {/* Dashboard Home */}
+          <Route index element={<DashboardHome />} />
 
-        {/* Help Requests */}
-        <Route path="help-requests" element={<HelpRequests />} />
-        <Route path="help-requests/:id" element={<HelpRequestDetails />} />
+          {/* Help Requests */}
+          <Route path="help-requests" element={<HelpRequests />} />
+          <Route path="help-requests/:id" element={<HelpRequestDetails />} />
 
-        {/* Other modules */}
-        <Route path="travel-requests" element={<TravelRequests />} />
+          {/* Other modules */}
+          <Route path="travel-requests" element={<TravelRequests />} />
 
-        {/* Road Reports */}
-        <Route path="road-reports" element={<RoadReportsMenu />} />
-        <Route path="road-reports/create" element={<CreateRoadReportPage />} />
-        <Route path="road-reports/my-district" element={<MyDistrictReports />} />
-        <Route path="road-reports/all" element={<RoadReports />} />
+          {/* Road Reports */}
+          <Route path="road-reports" element={<RoadReportsMenu />} />
+          <Route path="road-reports/create" element={<CreateRoadReportPage />} />
+          <Route path="road-reports/my-district" element={<MyDistrictReports />} />
+          <Route path="road-reports/all" element={<RoadReports />} />
 
 
-        <Route path="profile" element={<Profile />} />
-        <Route path="my-history" element={<MyHistory />} />
-        <Route path="my-history/road-reports" element={<MyRoadReports />} />
-        <Route path="my-history/help-requests" element={<MyHelpRequests />} />
-        <Route path="my-history/travel-requests"
-          element={<MyTravelRequests />}
-        />
-      </Route>
+          <Route path="profile" element={<Profile />} />
+          <Route path="my-history" element={<MyHistory />} />
+          <Route path="my-history/road-reports" element={<MyRoadReports />} />
+          <Route path="my-history/help-requests" element={<MyHelpRequests />} />
+          <Route path="my-history/travel-requests"
+            element={<MyTravelRequests />}
+          />
+        </Route>
 
-      {/* FALLBACK */}
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+        {/* FALLBACK */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+      <Toaster position="top-right" />
+    </>
   );
 };
 

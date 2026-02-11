@@ -41,7 +41,6 @@ const MLAResponseModal = ({ request, onClose, onSuccess }) => {
                 request.$id,
                 {
                     status: data.responseType,
-                    lastUpdatedAt: new Date().toISOString(),
                 }
             );
         },
@@ -68,7 +67,16 @@ const MLAResponseModal = ({ request, onClose, onSuccess }) => {
             return;
         }
 
-        responseMutation.mutate(responseData);
+        // Prepare data for submission
+        const dataToSubmit = {
+            ...responseData,
+            // Convert estimatedDays to integer or undefined if empty
+            estimatedDays: responseData.estimatedDays
+                ? parseInt(responseData.estimatedDays, 10)
+                : undefined,
+        };
+
+        responseMutation.mutate(dataToSubmit);
     };
 
     return (

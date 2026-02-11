@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tantml:react-query";
+import { useQuery } from "@tanstack/react-query";
 import { databases, Query } from "@/services/appwriteConfig";
 import { ArrowLeft, MapPin, Users, Calendar, MessageSquare, User } from "lucide-react";
 import { HELP_CATEGORIES_ARRAY } from "@/constants/helpRequestConstants";

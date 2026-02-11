@@ -3,9 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { account, databases, storage, ID, Permission, Role } from "@/services/appwriteConfig";
 import {
   MapPin, Mail, Lock, User, Phone, MapPinned, Building2,
-  Eye, EyeOff, ArrowLeft, Shield, Upload, FileText, CheckCircle
+  Eye, EyeOff, ArrowLeft, Shield, Upload, FileText, CheckCircle, Briefcase
 } from "lucide-react";
 import { statesData } from "@/states/states";
+import { DEPARTMENTS_ARRAY } from "@/constants/departmentConstants";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Register = () => {
   }, [navigate]);
 
   // Form state
-  const [role, setRole] = useState("citizen"); // "citizen" or "mla"
+  const [role, setRole] = useState("citizen"); // "citizen", "mla", or "official"
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -39,6 +40,10 @@ const Register = () => {
   const [constituency, setConstituency] = useState("");
   const [partyName, setPartyName] = useState("");
   const [govtIdFile, setGovtIdFile] = useState(null);
+
+  // Official-specific fields
+  const [department, setDepartment] = useState("");
+  const [designation, setDesignation] = useState("");
 
   // UI state
   const [showPassword, setShowPassword] = useState(false);
@@ -68,6 +73,21 @@ const Register = () => {
     if (role === "mla") {
       if (!constituency) {
         setError("Please select your constituency");
+        return;
+      }
+      if (!govtIdFile) {
+        setError("Please upload your government ID proof");
+        return;
+      }
+    }
+
+    if (role === "official") {
+      if (!district) {
+        setError("Please select your district");
+        return;
+      }
+      if (!department) {
+        setError("Please select your department");
         return;
       }
       if (!govtIdFile) {
@@ -140,6 +160,7 @@ const Register = () => {
           {
             applicationId: ID.unique(),
             userId: "", // Will be filled when admin approves
+            officialType: "MLA",
             name,
             email,
             phone,
@@ -147,6 +168,51 @@ const Register = () => {
             state,
             constituency,
             partyName: partyName || "",
+            department: "",
+            designation: "",
+            govtIdProof: fileUrl.href,
+            verificationStatus: "pending",
+            appliedAt: new Date().toISOString(),
+          }
+        );
+
+        // 4. Show success screen (waiting for approval)
+        setSuccess(true);
+
+      } else if (role === "official") {
+        // DEPARTMENT OFFICIAL REGISTRATION - Pending approval workflow
+
+        // 1. Upload government ID proof
+        const uploadedFile = await storage.createFile(
+          import.meta.env.VITE_APPWRITE_BUCKET_ID,
+          ID.unique(),
+          govtIdFile
+        );
+
+        // 2. Get file URL
+        const fileUrl = storage.getFileView(
+          import.meta.env.VITE_APPWRITE_BUCKET_ID,
+          uploadedFile.$id
+        );
+
+        // 3. Create Official application (NO user account yet)
+        await databases.createDocument(
+          import.meta.env.VITE_DATABASE_ID,
+          import.meta.env.VITE_MLA_APPLICATIONS_COLLECTION_ID,
+          ID.unique(),
+          {
+            applicationId: ID.unique(),
+            userId: "", // Will be filled when admin approves
+            officialType: "DEPARTMENT_OFFICIAL",
+            name,
+            email,
+            phone,
+            password, // Save password for account creation
+            state,
+            constituency: district, // Using constituency field for district
+            partyName: "",
+            department,
+            designation: designation || "",
             govtIdProof: fileUrl.href,
             verificationStatus: "pending",
             appliedAt: new Date().toISOString(),
@@ -164,8 +230,8 @@ const Register = () => {
     }
   };
 
-  // MLA Success Screen
-  if (success && role === "mla") {
+  // MLA/Official Success Screen
+  if (success && (role === "mla" || role === "official")) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 flex items-center justify-center p-6">
         <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
@@ -230,35 +296,50 @@ const Register = () => {
           {/* Role Selection */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-3">I am registering as</label>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-3">
               <button
                 type="button"
                 onClick={() => setRole("citizen")}
-                className={`p-4 border-2 rounded-lg transition-all ${role === "citizen"
+                className={`p-3 border-2 rounded-lg transition-all text-center ${role === "citizen"
                   ? "border-indigo-500 bg-indigo-50 shadow-md"
                   : "border-gray-200 hover:border-gray-300"
                   }`}
               >
-                <User className={`w-6 h-6 mx-auto mb-2 ${role === "citizen" ? "text-indigo-600" : "text-gray-400"}`} />
-                <div className={`font-semibold ${role === "citizen" ? "text-indigo-900" : "text-gray-700"}`}>
+                <User className={`w-5 h-5 mx-auto mb-1 ${role === "citizen" ? "text-indigo-600" : "text-gray-400"}`} />
+                <div className={`font-semibold text-sm ${role === "citizen" ? "text-indigo-900" : "text-gray-700"}`}>
                   Citizen
                 </div>
-                <div className="text-xs text-gray-500 mt-1">Regular user</div>
+                <div className="text-xs text-gray-500 mt-0.5">Regular user</div>
               </button>
 
               <button
                 type="button"
                 onClick={() => setRole("mla")}
-                className={`p-4 border-2 rounded-lg transition-all ${role === "mla"
+                className={`p-3 border-2 rounded-lg transition-all text-center ${role === "mla"
                   ? "border-purple-500 bg-purple-50 shadow-md"
                   : "border-gray-200 hover:border-gray-300"
                   }`}
               >
-                <Shield className={`w-6 h-6 mx-auto mb-2 ${role === "mla" ? "text-purple-600" : "text-gray-400"}`} />
-                <div className={`font-semibold ${role === "mla" ? "text-purple-900" : "text-gray-700"}`}>
+                <Shield className={`w-5 h-5 mx-auto mb-1 ${role === "mla" ? "text-purple-600" : "text-gray-400"}`} />
+                <div className={`font-semibold text-sm ${role === "mla" ? "text-purple-900" : "text-gray-700"}`}>
                   MLA
                 </div>
-                <div className="text-xs text-gray-500 mt-1">Requires approval</div>
+                <div className="text-xs text-gray-500 mt-0.5">Requires approval</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setRole("official")}
+                className={`p-3 border-2 rounded-lg transition-all text-center ${role === "official"
+                  ? "border-green-500 bg-green-50 shadow-md"
+                  : "border-gray-200 hover:border-gray-300"
+                  }`}
+              >
+                <Briefcase className={`w-5 h-5 mx-auto mb-1 ${role === "official" ? "text-green-600" : "text-gray-400"}`} />
+                <div className={`font-semibold text-sm ${role === "official" ? "text-green-900" : "text-gray-700"}`}>
+                  Government Official
+                </div>
+                <div className="text-xs text-gray-500 mt-0.5">Dept. officials</div>
               </button>
             </div>
           </div>
@@ -426,6 +507,81 @@ const Register = () => {
                           <Upload className="w-12 h-12 text-gray-400 mx-auto mb-2" />
                           <p className="text-sm font-medium text-gray-900">Click to upload ID proof</p>
                           <p className="text-xs text-gray-500 mt-1">Aadhar Card, PAN Card, or Official Letter</p>
+                          <p className="text-xs text-gray-500">PNG, JPG or PDF (max 5MB)</p>
+                        </>
+                      )}
+                    </label>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Department Official-specific fields */}
+            {role === "official" && (
+              <>
+                {/* Department & Designation */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Department <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition appearance-none bg-white"
+                      required
+                    >
+                      <option value="">Select Department</option>
+                      {DEPARTMENTS_ARRAY.filter(dept => dept.value !== 'MLA').map((dept) => (
+                        <option key={dept.value} value={dept.value}>
+                          {dept.icon} {dept.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Designation <span className="text-gray-400">(Optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={designation}
+                      onChange={(e) => setDesignation(e.target.value)}
+                      placeholder="e.g., Assistant Engineer"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
+                    />
+                  </div>
+                </div>
+
+                {/* Government ID Upload */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Government ID Proof <span className="text-red-500">*</span>
+                  </label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-500 transition">
+                    <input
+                      type="file"
+                      onChange={(e) => setGovtIdFile(e.target.files[0])}
+                      accept="image/*,.pdf"
+                      className="hidden"
+                      id="govt-id-official"
+                      required
+                    />
+                    <label htmlFor="govt-id-official" className="cursor-pointer">
+                      {govtIdFile ? (
+                        <div className="flex items-center justify-center gap-3">
+                          <FileText className="w-6 h-6 text-green-600" />
+                          <div className="text-left">
+                            <p className="text-sm font-medium text-gray-900">{govtIdFile.name}</p>
+                            <p className="text-xs text-gray-500">{(govtIdFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <Upload className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                          <p className="text-sm font-medium text-gray-900">Click to upload ID proof</p>
+                          <p className="text-xs text-gray-500 mt-1">Aadhar Card, Employee ID, or Official Letter</p>
                           <p className="text-xs text-gray-500">PNG, JPG or PDF (max 5MB)</p>
                         </>
                       )}

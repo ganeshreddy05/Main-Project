@@ -45,6 +45,7 @@ const AdminHome = () => {
     const totalUsers = allUsers.length;
     const citizens = allUsers.filter(u => u.role === "citizen").length;
     const mlas = allUsers.filter(u => u.role === "mla").length;
+    const officials = allUsers.filter(u => u.role === "official").length;
     const admins = allUsers.filter(u => u.role === "admin").length;
 
     const totalReports = allReports.length;
@@ -57,7 +58,7 @@ const AdminHome = () => {
         {
             label: "Total Users",
             value: totalUsers,
-            subtext: `${citizens} Citizens, ${mlas} MLAs, ${admins} Admins`,
+            subtext: `${citizens} Citizens, ${mlas} MLAs, ${officials} Officials`,
             icon: Users,
             color: "bg-blue-500",
             lightColor: "bg-blue-50",
@@ -73,7 +74,7 @@ const AdminHome = () => {
             textColor: "text-green-600",
         },
         {
-            label: "Pending MLA Applications",
+            label: "Pending Applications",
             value: pendingMLAs,
             subtext: "Awaiting review",
             icon: AlertCircle,
@@ -140,7 +141,7 @@ const AdminHome = () => {
                         className="p-4 border-2 border-gray-200 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition group"
                     >
                         <AlertCircle className="w-6 h-6 text-orange-600 mb-2" />
-                        <h3 className="font-semibold text-gray-900 mb-1">Review MLAs</h3>
+                        <h3 className="font-semibold text-gray-900 mb-1">Review Applications</h3>
                         <p className="text-sm text-gray-600">{pendingMLAs} pending applications</p>
                     </Link>
 
