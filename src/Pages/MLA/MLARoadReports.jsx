@@ -410,7 +410,7 @@ const MLARoadReports = () => {
                                     {/* Assign to Department Button */}
                                     <button
                                         onClick={() => handleOpenAssignModal(report)}
-                                        className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
+                                        className="bg-gradient-to-r from-yellow-500 to-amber-500 text-white py-2.5 px-4 rounded-lg font-medium hover:from-yellow-600 hover:to-amber-600 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
                                     >
                                         <Briefcase className="w-4 h-4" />
                                         <span className="text-sm">Assign</span>

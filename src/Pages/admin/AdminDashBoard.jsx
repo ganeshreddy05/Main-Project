@@ -7,7 +7,7 @@ import {
   FileText,
   Settings,
   LogOut,
-  Shield,
+  ShieldCheck,
   Bell
 } from "lucide-react";
 
@@ -43,11 +43,11 @@ const AdminDashboard = () => {
             {/* Logo */}
             <div className="flex items-center gap-3">
               <div className="bg-slate-700 p-2 rounded-lg">
-                <Shield className="w-6 h-6 text-white" />
+                <ShieldCheck className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h1 className="text-lg font-semibold text-gray-900">Admin Portal</h1>
-                <p className="text-xs text-gray-500">Turn The Wheel</p>
+                <p className="text-xs text-gray-500">Fix My District</p>
               </div>
             </div>
 

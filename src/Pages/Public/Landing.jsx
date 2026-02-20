@@ -8,23 +8,23 @@ import heroCar from "@/assets/illustration.jpg";
 const Landing = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900">
-     
+
       <header className="flex items-center justify-between px-10 py-5 border-b">
-     
+
         <div className="flex items-center gap-3">
-         
+
           <img
             src={logo}
-            alt="Turn The Wheel Logo"
+            alt="Fix My District Logo"
             className="w-10 h-10 object-contain"
           />
 
           <span className="text-2xl font-bold tracking-tight">
-            Turn The Wheel
+            FIX MY DISTRICT
           </span>
         </div>
 
-        
+
         <div className="flex gap-3">
           <Link to="/login">
             <Button variant="outline">Login</Button>
@@ -45,7 +45,7 @@ const Landing = () => {
           </h1>
 
           <p className="mt-5 text-lg text-gray-600">
-            Turn The Wheel helps travelers report road issues, request help,
+            Fix My District helps citizens report road issues, request help,
             and stay updated with real-time travel alerts — powered by the
             community.
           </p>
@@ -102,7 +102,7 @@ const Landing = () => {
 
       {/* Footer */}
       <footer className="text-center py-6 text-gray-500 text-sm">
-        © {new Date().getFullYear()} Turn The Wheel. All rights reserved.
+        © {new Date().getFullYear()} Fix My District. All rights reserved.
       </footer>
     </div>
   );

@@ -26,6 +26,8 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
             return <Navigate to="/admin/dashboard" replace />;
         } else if (profile.role === "mla") {
             return <Navigate to="/mla/dashboard" replace />;
+        } else if (profile.role === "official") {
+            return <Navigate to="/official/dashboard" replace />;
         } else {
             return <Navigate to="/dashboard" replace />;
         }

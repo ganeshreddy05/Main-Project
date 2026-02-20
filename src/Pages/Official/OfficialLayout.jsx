@@ -1,19 +1,15 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "@/context/AuthProvider";
-
 import {
     LayoutDashboard,
-    FileText,
-    Users,
-    Settings,
+    Briefcase,
+    User,
     LogOut,
-    Landmark,
-    MapPin,
     Bell
 } from "lucide-react";
 
-const MLADashboard = () => {
+const OfficialLayout = () => {
     const { logout, profile } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -29,10 +25,9 @@ const MLADashboard = () => {
     };
 
     const navItems = [
-        { path: "/mla/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-        { path: "/mla/dashboard/district-reports", icon: FileText, label: "District Reports" },
-        { path: "/mla/dashboard/help-requests", icon: Users, label: "Help Requests" },
-        { path: "/mla/dashboard/profile", icon: Settings, label: "Profile" },
+        { path: "/official/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+        { path: "/official/dashboard/work-orders", icon: Briefcase, label: "Work Orders" },
+        { path: "/official/dashboard/profile", icon: User, label: "Profile" },
     ];
 
     return (
@@ -43,39 +38,38 @@ const MLADashboard = () => {
                     <div className="flex items-center justify-between">
                         {/* Logo */}
                         <div className="flex items-center gap-3">
-                            <div className="bg-red-600 p-2 rounded-lg">
-                                <Landmark className="w-6 h-6 text-white" />
+                            <div className="bg-amber-500 p-2 rounded-lg">
+                                <Briefcase className="w-6 h-6 text-white" />
                             </div>
                             <div>
-                                <h1 className="text-lg font-semibold text-gray-900">MLA Portal</h1>
+                                <h1 className="text-lg font-semibold text-gray-900">Official Portal</h1>
                                 <p className="text-xs text-gray-500">Fix My District</p>
                             </div>
                         </div>
 
                         {/* Right Side */}
                         <div className="flex items-center gap-4">
-                            {/* Constituency Badge */}
-                            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-md">
-                                <MapPin className="w-4 h-4 text-blue-700" />
-                                <div className="text-right">
-                                    <p className="text-xs text-blue-700 font-medium">Constituency</p>
-                                    <p className="text-sm font-semibold text-blue-900">{profile?.district || "N/A"}</p>
-                                </div>
+                            {/* Department Badge */}
+                            <div className="hidden md:flex items-center gap-2 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200">
+                                <Briefcase className="w-4 h-4 text-amber-600" />
+                                <span className="text-sm font-medium text-amber-700">
+                                    {profile?.department?.replace(/_/g, " ") || "Department"}
+                                </span>
                             </div>
 
                             {/* Notifications */}
                             <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-md transition">
                                 <Bell className="w-5 h-5" />
-                                <span className="absolute top-1 right-1 w-2 h-2 bg-blue-600 rounded-full"></span>
+                                <span className="absolute top-1 right-1 w-2 h-2 bg-amber-500 rounded-full"></span>
                             </button>
 
-                            {/* MLA Info */}
+                            {/* Official Info */}
                             <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
                                 <div className="text-right">
                                     <p className="text-sm font-semibold text-gray-900">{profile?.name}</p>
-                                    <p className="text-xs text-blue-700">MLA</p>
+                                    <p className="text-xs text-amber-600">Official</p>
                                 </div>
-                                <div className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center">
+                                <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center">
                                     <span className="text-white font-semibold text-sm">
                                         {profile?.name?.charAt(0).toUpperCase()}
                                     </span>
@@ -106,17 +100,17 @@ const MLADashboard = () => {
                                 <NavLink
                                     key={item.path}
                                     to={item.path}
-                                    end={item.path === "/mla/dashboard"}
+                                    end={item.path === "/official/dashboard"}
                                     className={({ isActive }) =>
                                         `flex items-center gap-3 px-4 py-2.5 rounded-md transition ${isActive
-                                            ? "bg-blue-50 text-blue-700 font-medium"
+                                            ? "bg-amber-50 text-amber-700 font-medium"
                                             : "text-gray-700 hover:bg-gray-100"
                                         }`
                                     }
                                 >
                                     {({ isActive }) => (
                                         <>
-                                            <Icon className={`w-5 h-5 ${isActive ? "text-blue-700" : "text-gray-500"}`} />
+                                            <Icon className={`w-5 h-5 ${isActive ? "text-amber-600" : "text-gray-500"}`} />
                                             <span>{item.label}</span>
                                         </>
                                     )}
@@ -135,4 +129,4 @@ const MLADashboard = () => {
     );
 };
 
-export default MLADashboard;
+export default OfficialLayout;

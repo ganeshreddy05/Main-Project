@@ -47,11 +47,11 @@ const AssignToDepartmentModal = ({ report, onClose, onAssign, isLoading }) => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
                 {/* Header */}
-                <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 sticky top-0 z-10">
+                <div className="bg-gradient-to-r from-red-600 to-red-500 text-white p-6 sticky top-0 z-10">
                     <div className="flex items-center justify-between">
                         <div>
                             <h2 className="text-2xl font-bold mb-1">Assign to Department</h2>
-                            <p className="text-purple-100 text-sm">
+                            <p className="text-red-100 text-sm">
                                 Create a work order for department officials
                             </p>
                         </div>
@@ -67,12 +67,12 @@ const AssignToDepartmentModal = ({ report, onClose, onAssign, isLoading }) => {
                 {/* Content */}
                 <div className="p-6 space-y-6">
                     {/* Original Report Info */}
-                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                        <h3 className="text-sm font-semibold text-purple-900 mb-2 flex items-center gap-2">
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <h3 className="text-sm font-semibold text-red-900 mb-2 flex items-center gap-2">
                             <AlertCircle className="w-4 h-4" />
                             Original Report
                         </h3>
-                        <div className="space-y-1 text-sm text-purple-800">
+                        <div className="space-y-1 text-sm text-red-800">
                             <p>
                                 <span className="font-medium">Route:</span> {report.fromPlace} → {report.toPlace}
                             </p>
@@ -103,7 +103,7 @@ const AssignToDepartmentModal = ({ report, onClose, onAssign, isLoading }) => {
                                 value={formData.department}
                                 onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                                 className={`w-full pl-11 pr-4 py-3 border ${errors.department ? "border-red-300" : "border-gray-300"
-                                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none bg-white`}
+                                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent appearance-none bg-white`}
                             >
                                 <option value="">Choose a department...</option>
                                 {DEPARTMENTS_ARRAY.map((dept) => (
@@ -130,8 +130,8 @@ const AssignToDepartmentModal = ({ report, onClose, onAssign, isLoading }) => {
                                     type="button"
                                     onClick={() => setFormData({ ...formData, priority: option.value })}
                                     className={`p-3 rounded-lg border-2 transition-all ${formData.priority === option.value
-                                            ? `${option.color} border-current`
-                                            : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
+                                        ? `${option.color} border-current`
+                                        : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
                                         }`}
                                 >
                                     <div className="text-center">
@@ -155,7 +155,7 @@ const AssignToDepartmentModal = ({ report, onClose, onAssign, isLoading }) => {
                                 value={formData.estimatedDate}
                                 onChange={(e) => setFormData({ ...formData, estimatedDate: e.target.value })}
                                 min={new Date().toISOString().split("T")[0]}
-                                className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                             />
                         </div>
                         <p className="text-xs text-gray-500 mt-1">
@@ -178,7 +178,7 @@ const AssignToDepartmentModal = ({ report, onClose, onAssign, isLoading }) => {
 Example: Please inspect the potholes on this road and arrange for immediate repairs. This is a frequently used route and poses safety risks to commuters."
                                 rows={6}
                                 className={`w-full pl-11 pr-4 py-3 border ${errors.instructions ? "border-red-300" : "border-gray-300"
-                                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none`}
+                                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none`}
                             />
                         </div>
                         {errors.instructions && (
@@ -191,20 +191,20 @@ Example: Please inspect the potholes on this road and arrange for immediate repa
 
                     {/* Preview */}
                     {formData.department && formData.instructions && (
-                        <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
-                            <h4 className="text-sm font-semibold text-purple-900 mb-3 flex items-center gap-2">
+                        <div className="bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg p-4">
+                            <h4 className="text-sm font-semibold text-red-900 mb-3 flex items-center gap-2">
                                 <Flag className="w-4 h-4" />
                                 Work Order Preview
                             </h4>
                             <div className="space-y-2 text-sm">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-purple-600 font-medium">Department:</span>
-                                    <span className="text-purple-900">
+                                    <span className="text-red-600 font-medium">Department:</span>
+                                    <span className="text-red-900">
                                         {DEPARTMENTS_ARRAY.find((d) => d.value === formData.department)?.label}
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-purple-600 font-medium">Priority:</span>
+                                    <span className="text-red-600 font-medium">Priority:</span>
                                     <span className={`px-2 py-0.5 rounded text-xs font-medium ${priorityOptions.find((p) => p.value === formData.priority)?.color
                                         }`}>
                                         {formData.priority.toUpperCase()}
@@ -212,8 +212,8 @@ Example: Please inspect the potholes on this road and arrange for immediate repa
                                 </div>
                                 {formData.estimatedDate && (
                                     <div className="flex items-center gap-2">
-                                        <span className="text-purple-600 font-medium">Due Date:</span>
-                                        <span className="text-purple-900">
+                                        <span className="text-red-600 font-medium">Due Date:</span>
+                                        <span className="text-red-900">
                                             {new Date(formData.estimatedDate).toLocaleDateString()}
                                         </span>
                                     </div>
@@ -234,7 +234,7 @@ Example: Please inspect the potholes on this road and arrange for immediate repa
                     <button
                         onClick={handleSubmit}
                         disabled={isLoading}
-                        className="flex-1 px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="flex-1 px-4 py-3 bg-gradient-to-r from-yellow-500 to-amber-500 text-white rounded-lg font-medium hover:from-yellow-600 hover:to-amber-600 shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         {isLoading ? (
                             <>

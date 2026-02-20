@@ -10,7 +10,8 @@ import {
     AlertCircle,
     TrendingUp,
     Calendar,
-    User
+    User,
+    ArrowUpRight
 } from "lucide-react";
 
 const OfficialDashboard = () => {
@@ -42,243 +43,192 @@ const OfficialDashboard = () => {
 
     const statCards = [
         {
-            title: "Total Work Orders",
+            label: "Total Work Orders",
             value: stats.total,
             icon: Briefcase,
-            color: "yellow",
-            bgColor: "bg-yellow-100",
-            textColor: "text-yellow-600",
-            borderColor: "border-yellow-300"
+            color: "bg-amber-500",
+            bgColor: "bg-amber-50",
+            textColor: "text-amber-600",
         },
         {
-            title: "Pending Action",
+            label: "Pending Action",
             value: stats.pending,
             icon: AlertCircle,
-            color: "yellow",
-            bgColor: "bg-yellow-100",
+            color: "bg-yellow-500",
+            bgColor: "bg-yellow-50",
             textColor: "text-yellow-600",
-            borderColor: "border-yellow-300"
         },
         {
-            title: "In Progress",
+            label: "In Progress",
             value: stats.inProgress,
             icon: Clock,
-            color: "blue",
-            bgColor: "bg-blue-100",
+            color: "bg-blue-500",
+            bgColor: "bg-blue-50",
             textColor: "text-blue-600",
-            borderColor: "border-blue-300"
         },
         {
-            title: "Completed",
+            label: "Completed",
             value: stats.completed,
             icon: CheckCircle,
-            color: "green",
-            bgColor: "bg-green-100",
+            color: "bg-green-500",
+            bgColor: "bg-green-50",
             textColor: "text-green-600",
-            borderColor: "border-green-300"
-        },
-        {
-            title: "High Priority",
-            value: stats.highPriority,
-            icon: TrendingUp,
-            color: "red",
-            bgColor: "bg-red-100",
-            textColor: "text-red-600",
-            borderColor: "border-red-300"
         },
     ];
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center h-screen">
+            <div className="flex items-center justify-center h-64">
                 <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-gray-600">Loading dashboard...</p>
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-amber-600 mx-auto"></div>
+                    <p className="text-gray-600 mt-4">Loading dashboard...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50">
-            {/* Top Navigation Bar */}
-            <div className="bg-white shadow-md border-b border-yellow-200">
-                <div className="max-w-7xl mx-auto px-6 py-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <Briefcase className="w-8 h-8 text-yellow-600" />
+        <div>
+            {/* Welcome Header */}
+            <div className="mb-6">
+                <h1 className="text-2xl font-bold text-gray-900">
+                    Welcome, {profile?.name || "Official"}!
+                </h1>
+                <p className="text-gray-600 mt-1">
+                    Department: <span className="font-semibold text-amber-600">
+                        {profile?.department?.replace(/_/g, " ") || "Unknown"}
+                    </span>
+                </p>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                {statCards.map((stat, index) => {
+                    const Icon = stat.icon;
+                    return (
+                        <div
+                            key={index}
+                            className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow"
+                        >
+                            <div className="flex items-center justify-between mb-3">
+                                <div className={`p-2.5 rounded-lg ${stat.bgColor}`}>
+                                    <Icon className={`w-5 h-5 ${stat.textColor}`} />
+                                </div>
+                            </div>
+                            <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                            <p className="text-sm text-gray-600 mt-1">{stat.label}</p>
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Department Info Banner */}
+            <div className="bg-gradient-to-r from-amber-500 to-yellow-500 rounded-xl p-6 text-white mb-6 shadow-lg">
+                <div className="flex justify-between items-center">
+                    <div>
+                        <h2 className="text-lg font-bold flex items-center gap-2">
+                            <Briefcase className="w-5 h-5" />
+                            Your Department
+                        </h2>
+                        <p className="text-amber-100 mt-1">
+                            {profile?.department?.replace(/_/g, " ") || "Unknown Department"} — {profile?.district || "District N/A"}
+                        </p>
+                        <div className="flex gap-4 mt-3">
                             <div>
-                                <h1 className="text-xl font-bold text-gray-900">Official Dashboard</h1>
-                                <p className="text-sm text-gray-600">
-                                    {profile?.department?.replace(/_/g, " ") || "Unknown Department"}
-                                </p>
+                                <span className="text-2xl font-bold">{stats.total}</span>
+                                <span className="text-amber-100 text-sm ml-1">Total Orders</span>
+                            </div>
+                            <div className="border-l border-amber-300 pl-4">
+                                <span className="text-2xl font-bold">{stats.completed}</span>
+                                <span className="text-amber-100 text-sm ml-1">Completed</span>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <Link
-                                to="/official/profile"
-                                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-yellow-600 transition"
-                            >
-                                <User className="w-5 h-5" />
-                                <span className="font-medium">Profile</span>
-                            </Link>
-                            <button
-                                onClick={() => {
-                                    // Logout logic
-                                    localStorage.clear();
-                                    sessionStorage.clear();
-                                    window.location.href = "/";
-                                }}
-                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
-                            >
-                                Logout
-                            </button>
-                        </div>
                     </div>
+                    <ArrowUpRight className="w-10 h-10 text-amber-200" />
                 </div>
             </div>
 
-            {/* Main Content */}
-            <div className="max-w-7xl mx-auto p-6">
-                {/* Header */}
-                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-1">
-                                Welcome, {profile?.name || "Official"}!
-                            </h1>
-                            <p className="text-gray-600">
-                                Department: <span className="font-semibold text-yellow-600">
-                                    {profile?.department?.replace(/_/g, " ") || "Unknown"}
-                                </span>
-                            </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Briefcase className="w-16 h-16 text-yellow-600" />
-                        </div>
-                    </div>
-                </div>
+            {/* Quick Actions */}
+            <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <Link
+                    to="/official/dashboard/work-orders"
+                    className="p-4 border-2 border-amber-200 rounded-lg hover:border-amber-500 hover:bg-amber-50 transition text-left"
+                >
+                    <Briefcase className="w-6 h-6 text-amber-600 mb-2" />
+                    <div className="font-semibold text-gray-900">View Work Orders</div>
+                    <div className="text-sm text-gray-600">Manage and update work order status</div>
+                </Link>
+                <Link
+                    to="/official/dashboard/profile"
+                    className="p-4 border-2 border-amber-200 rounded-lg hover:border-amber-500 hover:bg-amber-50 transition text-left"
+                >
+                    <User className="w-6 h-6 text-amber-600 mb-2" />
+                    <div className="font-semibold text-gray-900">View Profile</div>
+                    <div className="text-sm text-gray-600">Your official profile details</div>
+                </Link>
+            </div>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
-                    {statCards.map((stat, index) => {
-                        const Icon = stat.icon;
-                        return (
-                            <div
-                                key={index}
-                                className={`bg-white rounded-xl shadow-md p-6 border-l-4 ${stat.borderColor} hover:shadow-lg transition-all duration-200`}
-                            >
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-                                        <Icon className={`w-6 h-6 ${stat.textColor}`} />
-                                    </div>
-                                    <div className={`text-3xl font-bold ${stat.textColor}`}>
-                                        {stat.value}
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
-                            </div>
-                        );
-                    })}
-                </div>
-
-                {/* Quick Actions */}
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Recent Work Orders */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-bold text-gray-900">Recent Work Orders</h2>
                     <Link
-                        to="/official/work-orders"
-                        className="bg-gradient-to-r from-yellow-500 to-amber-500 text-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-200 group"
+                        to="/official/dashboard/work-orders"
+                        className="text-amber-600 hover:text-amber-700 text-sm font-medium"
                     >
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <h3 className="text-2xl font-bold mb-2">View All Work Orders</h3>
-                                <p className="text-yellow-100">
-                                    Manage and update work order status
-                                </p>
-                            </div>
-                            <Briefcase className="w-12 h-12 group-hover:scale-110 transition-transform" />
-                        </div>
+                        View All →
                     </Link>
-
-                    {stats.pending > 0 && (
-                        <Link
-                            to="/official/work-orders"
-                            className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-200 group"
-                        >
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <h3 className="text-2xl font-bold mb-2">Pending Actions</h3>
-                                    <p className="text-yellow-100">
-                                        {stats.pending} work {stats.pending === 1 ? "order needs" : "orders need"} your attention
-                                    </p>
-                                </div>
-                                <AlertCircle className="w-12 h-12 group-hover:scale-110 transition-transform" />
-                            </div>
-                        </Link>
-                    )}
                 </div>
 
-                {/* Recent Work Orders */}
-                <div className="bg-white rounded-2xl shadow-lg p-6">
-                    <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900">Recent Work Orders</h2>
-                        <Link
-                            to="/official/work-orders"
-                            className="text-yellow-600 hover:text-yellow-700 font-medium text-sm"
-                        >
-                            View All →
-                        </Link>
+                {recentOrders.length === 0 ? (
+                    <div className="text-center py-10">
+                        <Briefcase className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                        <p className="text-gray-600">No work orders assigned yet</p>
                     </div>
-
-                    {recentOrders.length === 0 ? (
-                        <div className="text-center py-12">
-                            <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                            <p className="text-gray-600">No work orders assigned yet</p>
-                        </div>
-                    ) : (
-                        <div className="space-y-3">
-                            {recentOrders.map((order) => (
-                                <div
-                                    key={order.$id}
-                                    className="border border-gray-200 rounded-lg p-4 hover:border-yellow-300 hover:shadow-md transition-all duration-200"
-                                >
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex-1">
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <span className="text-xs font-mono text-gray-500">
-                                                    {order.workOrderId}
-                                                </span>
-                                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${order.status === "pending" ? "bg-yellow-100 text-yellow-700" :
-                                                    order.status === "in_progress" ? "bg-purple-100 text-purple-700" :
+                ) : (
+                    <div className="space-y-3">
+                        {recentOrders.map((order) => (
+                            <div
+                                key={order.$id}
+                                className="border border-gray-200 rounded-lg p-4 hover:border-amber-300 hover:shadow-sm transition"
+                            >
+                                <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <span className="text-xs font-mono text-gray-500">
+                                                {order.workOrderId}
+                                            </span>
+                                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${order.status === "pending" ? "bg-yellow-100 text-yellow-700" :
+                                                    order.status === "in_progress" ? "bg-blue-100 text-blue-700" :
                                                         order.status === "completed" ? "bg-green-100 text-green-700" :
                                                             "bg-gray-100 text-gray-700"
-                                                    }`}>
-                                                    {order.status?.replace(/_/g, " ").toUpperCase()}
-                                                </span>
-                                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${order.priorityLevel === "critical" || order.priorityLevel === "urgent" ? "bg-red-100 text-red-700" :
+                                                }`}>
+                                                {order.status?.replace(/_/g, " ").toUpperCase()}
+                                            </span>
+                                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${order.priorityLevel === "critical" || order.priorityLevel === "urgent" ? "bg-red-100 text-red-700" :
                                                     order.priorityLevel === "high" ? "bg-orange-100 text-orange-700" :
                                                         "bg-blue-100 text-blue-700"
-                                                    }`}>
-                                                    {order.priorityLevel?.toUpperCase()}
-                                                </span>
-                                            </div>
-                                            <p className="text-gray-800 mb-2 line-clamp-2">
-                                                {order.mlaInstructions}
-                                            </p>
-                                            <div className="flex items-center gap-4 text-xs text-gray-600">
-                                                <span>From: {order.mlaName}</span>
-                                                <span>•</span>
-                                                <span className="flex items-center gap-1">
-                                                    <Calendar className="w-3 h-3" />
-                                                    {new Date(order.assignedAt).toLocaleDateString()}
-                                                </span>
-                                            </div>
+                                                }`}>
+                                                {order.priorityLevel?.toUpperCase()}
+                                            </span>
+                                        </div>
+                                        <p className="text-gray-800 mb-2 line-clamp-2">
+                                            {order.mlaInstructions}
+                                        </p>
+                                        <div className="flex items-center gap-4 text-xs text-gray-600">
+                                            <span>From: {order.mlaName}</span>
+                                            <span>•</span>
+                                            <span className="flex items-center gap-1">
+                                                <Calendar className="w-3 h-3" />
+                                                {new Date(order.assignedAt).toLocaleDateString()}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

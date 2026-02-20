@@ -16,7 +16,6 @@ import DashboardHome from "@/Pages/Private/DashBoardHome";
 import HelpRequests from "@/Pages/Private/HelpRequests/HelpRequest";
 import HelpRequestDetails from "@/Pages/Private//HelpRequests/HelpRequestDetails";
 
-import TravelRequests from "@/Pages/Private/TravelRequest";
 import RoadReports from "@/Pages/Private/RoadReportsfile/RoadReports";
 import RoadReportsMenu from "@/Pages/Private/RoadReportsfile/RoadReportsMenu";
 import CreateRoadReportPage from "@/Pages/Private/RoadReportsfile/CreateRoadReportPage";
@@ -26,7 +25,6 @@ import Profile from "@/Pages/Private/Profile";
 import MyHistory from "@/Pages/Private/MyHistory";
 import MyRoadReports from "@/Pages/Private/MyRoadReports";
 import MyHelpRequests from "@/Pages/Private/MyHelpRequests";
-import MyTravelRequests from "@/Pages/Private/MyTravelRequests";
 
 /* Admin pages */
 import AdminLogin from "@/Pages/Admin/AdminLogin";
@@ -46,6 +44,7 @@ import MLAProfile from "@/Pages/MLA/MLAProfile";
 import MLAHelpRequests from "@/Pages/MLA/MLAHelpRequests";
 
 /* Official pages */
+import OfficialLayout from "@/Pages/Official/OfficialLayout";
 import OfficialDashboard from "@/Pages/Official/OfficialDashboard";
 import OfficialWorkOrders from "@/Pages/Official/OfficialWorkOrders";
 import OfficialProfile from "@/Pages/Official/OfficialProfile";
@@ -102,26 +101,14 @@ const App = () => {
           path="/official/dashboard"
           element={
             <ProtectedRoute allowedRoles={["official"]}>
-              <OfficialDashboard />
+              <OfficialLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/official/work-orders"
-          element={
-            <ProtectedRoute allowedRoles={["official"]}>
-              <OfficialWorkOrders />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/official/profile"
-          element={
-            <ProtectedRoute allowedRoles={["official"]}>
-              <OfficialProfile />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route index element={<OfficialDashboard />} />
+          <Route path="work-orders" element={<OfficialWorkOrders />} />
+          <Route path="profile" element={<OfficialProfile />} />
+        </Route>
 
         {/* PRIVATE DASHBOARD ROUTES - Accessible by citizens and MLAs */}
         <Route
@@ -139,9 +126,6 @@ const App = () => {
           <Route path="help-requests" element={<HelpRequests />} />
           <Route path="help-requests/:id" element={<HelpRequestDetails />} />
 
-          {/* Other modules */}
-          <Route path="travel-requests" element={<TravelRequests />} />
-
           {/* Road Reports */}
           <Route path="road-reports" element={<RoadReportsMenu />} />
           <Route path="road-reports/create" element={<CreateRoadReportPage />} />
@@ -153,9 +137,6 @@ const App = () => {
           <Route path="my-history" element={<MyHistory />} />
           <Route path="my-history/road-reports" element={<MyRoadReports />} />
           <Route path="my-history/help-requests" element={<MyHelpRequests />} />
-          <Route path="my-history/travel-requests"
-            element={<MyTravelRequests />}
-          />
         </Route>
 
         {/* FALLBACK */}

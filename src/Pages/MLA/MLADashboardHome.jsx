@@ -72,9 +72,9 @@ const MLADashboardHome = () => {
             label: "Help Requests",
             value: helpRequests.length,
             icon: Users,
-            color: "bg-purple-500",
-            bgColor: "bg-purple-50",
-            textColor: "text-purple-600",
+            color: "bg-red-500",
+            bgColor: "bg-red-50",
+            textColor: "text-red-600",
         },
         {
             label: "Pending Issues",
@@ -103,7 +103,7 @@ const MLADashboardHome = () => {
     if (loadingReports || loadingRequests) {
         return (
             <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-purple-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-red-600"></div>
             </div>
         );
     }
@@ -136,28 +136,28 @@ const MLADashboardHome = () => {
             </div>
 
             {/* Constituency Info */}
-            <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-6 text-white">
+            <div className="bg-gradient-to-r from-red-600 to-red-500 rounded-xl p-6 text-white">
                 <div className="flex items-start justify-between">
                     <div>
                         <div className="flex items-center gap-2 mb-2">
                             <Building2 className="w-5 h-5" />
                             <h2 className="text-xl font-bold">Your Constituency</h2>
                         </div>
-                        <p className="text-purple-100 mb-4">
+                        <p className="text-red-100 mb-4">
                             You are serving the people of {profile?.district} constituency in {profile?.state}
                         </p>
                         <div className="flex gap-4">
                             <div>
                                 <div className="text-2xl font-bold">{roadReports.length + helpRequests.length}</div>
-                                <div className="text-sm text-purple-100">Total Issues Reported</div>
+                                <div className="text-sm text-red-100">Total Issues Reported</div>
                             </div>
-                            <div className="w-px bg-purple-300"></div>
+                            <div className="w-px bg-red-300"></div>
                             <div>
                                 <div className="text-2xl font-bold">
                                     {roadReports.filter((r) => r.status?.toUpperCase() === "RESOLVED").length +
                                         helpRequests.filter((h) => h.status?.toUpperCase() === "RESOLVED").length}
                                 </div>
-                                <div className="text-sm text-purple-100">Issues Resolved</div>
+                                <div className="text-sm text-red-100">Issues Resolved</div>
                             </div>
                         </div>
                     </div>
@@ -220,22 +220,22 @@ const MLADashboardHome = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <button
                         onClick={() => window.location.href = "/mla/dashboard/road-reports"}
-                        className="p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition text-left"
+                        className="p-4 border-2 border-red-200 rounded-lg hover:border-red-500 hover:bg-red-50 transition text-left"
                     >
-                        <FileText className="w-6 h-6 text-purple-600 mb-2" />
+                        <FileText className="w-6 h-6 text-red-600 mb-2" />
                         <div className="font-semibold text-gray-900">View All Reports</div>
                         <div className="text-sm text-gray-600">See all road reports in your area</div>
                     </button>
                     <button
                         onClick={() => window.location.href = "/mla/dashboard/help-requests"}
-                        className="p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition text-left"
+                        className="p-4 border-2 border-red-200 rounded-lg hover:border-red-500 hover:bg-red-50 transition text-left"
                     >
-                        <Users className="w-6 h-6 text-purple-600 mb-2" />
+                        <Users className="w-6 h-6 text-red-600 mb-2" />
                         <div className="font-semibold text-gray-900">Help Requests</div>
                         <div className="text-sm text-gray-600">Manage citizen help requests</div>
                     </button>
-                    <button className="p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition text-left">
-                        <TrendingUp className="w-6 h-6 text-purple-600 mb-2" />
+                    <button className="p-4 border-2 border-red-200 rounded-lg hover:border-red-500 hover:bg-red-50 transition text-left">
+                        <TrendingUp className="w-6 h-6 text-red-600 mb-2" />
                         <div className="font-semibold text-gray-900">Analytics</div>
                         <div className="text-sm text-gray-600">View constituency insights</div>
                     </button>

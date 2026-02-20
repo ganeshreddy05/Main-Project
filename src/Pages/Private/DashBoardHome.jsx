@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { databases, Query } from "@/services/appwriteConfig";
 import { useAuth } from "@/context/useAuth";
 import { Link } from "react-router-dom";
-import { MapIcon, Users, Briefcase, TrendingUp, ArrowRight } from "lucide-react";
+import { MapIcon, Users, TrendingUp, ArrowRight } from "lucide-react";
 import RoadReportCard from "./RoadReportsfile/RoadReportCard";
 import HelpRequestCard from "./HelpRequests/HelpRequestCard";
 
@@ -23,7 +23,7 @@ const DashboardHome = () => {
       const filtered = res.documents.filter(
         (doc) => doc.district?.toLowerCase() === district?.toLowerCase()
       );
-      return filtered.slice(0, 6); // Get 6 for horizontal display
+      return filtered.slice(0, 6);
     },
   });
 
@@ -40,7 +40,7 @@ const DashboardHome = () => {
       const filtered = res.documents.filter(
         (doc) => doc.district?.toLowerCase() === district?.toLowerCase()
       );
-      return filtered.slice(0, 6); // Get 6 for horizontal display
+      return filtered.slice(0, 6);
     },
   });
 
@@ -57,8 +57,8 @@ const DashboardHome = () => {
         <p className="text-gray-600">Here's what's happening in your area today</p>
       </div>
 
-      {/* THREE STAT CARDS - TOP ROW */}
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
+      {/* TWO STAT CARDS - TOP ROW */}
+      <div className="grid md:grid-cols-2 gap-6 mb-8">
         {/* ROAD REPORTS STAT CARD */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 group">
           <div className="flex items-start justify-between mb-4">
@@ -125,39 +125,6 @@ const DashboardHome = () => {
           <Link
             to="/dashboard/help-requests"
             className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-2.5 rounded-lg font-medium hover:from-cyan-700 hover:to-blue-700 shadow-sm hover:shadow-md transition-all duration-200"
-          >
-            <span>View All</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        {/* TRAVEL REQUESTS STAT CARD */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 group">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-violet-100 to-purple-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <Briefcase className="w-6 h-6 text-violet-700" />
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900">Travel Requests</h2>
-                <p className="text-xs text-gray-500">Journey planning</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-4">
-            <div className="flex items-baseline gap-2">
-              <p className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-                0
-              </p>
-              <span className="text-sm text-gray-500">trips</span>
-            </div>
-            <p className="text-sm text-gray-600 mt-1">Upcoming journeys</p>
-          </div>
-
-          <Link
-            to="/dashboard/travel-requests"
-            className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-violet-600 to-purple-600 text-white py-2.5 rounded-lg font-medium hover:from-violet-700 hover:to-purple-700 shadow-sm hover:shadow-md transition-all duration-200"
           >
             <span>View All</span>
             <ArrowRight className="w-4 h-4" />

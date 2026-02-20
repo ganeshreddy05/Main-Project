@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import authService from "@/services/authService";
-import { Home, AlertCircle, Briefcase, MapIcon, History, User, LogOut } from "lucide-react";
+import { Home, AlertCircle, MapIcon, History, User, LogOut, CircleDot } from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ const Sidebar = () => {
   const navItems = [
     { to: "/dashboard", label: "Dashboard", icon: Home, end: true },
     { to: "/dashboard/help-requests", label: "Help Requests", icon: AlertCircle },
-    { to: "/dashboard/travel-requests", label: "Travel Requests", icon: Briefcase },
     { to: "/dashboard/road-reports", label: "Road Reports", icon: MapIcon },
     { to: "/dashboard/my-history", label: "My History", icon: History },
     { to: "/dashboard/profile", label: "Profile", icon: User },
@@ -25,13 +24,13 @@ const Sidebar = () => {
       <div className="mb-8 px-2">
         <div className="flex items-center gap-2 mb-1">
           <div className="w-8 h-8 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center shadow-md">
-            <MapIcon className="w-5 h-5 text-white" />
+            <CircleDot className="w-5 h-5 text-white" />
           </div>
           <h2 className="text-xl font-semibold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent">
-            Turn The Wheel
+            Fix My District
           </h2>
         </div>
-        <p className="text-xs text-gray-500 ml-10">Travel & Safety Portal</p>
+        <p className="text-xs text-gray-500 ml-10">Citizen Portal</p>
       </div>
 
       {/* Navigation */}

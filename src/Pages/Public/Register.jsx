@@ -233,7 +233,7 @@ const Register = () => {
   // MLA/Official Success Screen
   if (success && (role === "mla" || role === "official")) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50 flex items-center justify-center p-6">
         <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle className="w-8 h-8 text-green-600" />
@@ -253,7 +253,7 @@ const Register = () => {
           </div>
           <Link
             to="/"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg transition"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg font-semibold hover:shadow-lg transition"
           >
             Back to Home
           </Link>
@@ -290,7 +290,7 @@ const Register = () => {
               <MapPin className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
-            <p className="text-gray-600">Join Turn The Wheel community</p>
+            <p className="text-gray-600">Join Fix My District community</p>
           </div>
 
           {/* Role Selection */}
@@ -316,12 +316,12 @@ const Register = () => {
                 type="button"
                 onClick={() => setRole("mla")}
                 className={`p-3 border-2 rounded-lg transition-all text-center ${role === "mla"
-                  ? "border-purple-500 bg-purple-50 shadow-md"
+                  ? "border-red-500 bg-red-50 shadow-md"
                   : "border-gray-200 hover:border-gray-300"
                   }`}
               >
-                <Shield className={`w-5 h-5 mx-auto mb-1 ${role === "mla" ? "text-purple-600" : "text-gray-400"}`} />
-                <div className={`font-semibold text-sm ${role === "mla" ? "text-purple-900" : "text-gray-700"}`}>
+                <Shield className={`w-5 h-5 mx-auto mb-1 ${role === "mla" ? "text-red-600" : "text-gray-400"}`} />
+                <div className={`font-semibold text-sm ${role === "mla" ? "text-red-900" : "text-gray-700"}`}>
                   MLA
                 </div>
                 <div className="text-xs text-gray-500 mt-0.5">Requires approval</div>
@@ -475,7 +475,7 @@ const Register = () => {
                     value={partyName}
                     onChange={(e) => setPartyName(e.target.value)}
                     placeholder="e.g., INC, BJP, TRS"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition"
                   />
                 </div>
 
@@ -484,7 +484,7 @@ const Register = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Government ID Proof <span className="text-red-500">*</span>
                   </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-purple-500 transition">
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-500 transition">
                     <input
                       type="file"
                       onChange={(e) => setGovtIdFile(e.target.files[0])}
@@ -496,7 +496,7 @@ const Register = () => {
                     <label htmlFor="govt-id" className="cursor-pointer">
                       {govtIdFile ? (
                         <div className="flex items-center justify-center gap-3">
-                          <FileText className="w-6 h-6 text-purple-600" />
+                          <FileText className="w-6 h-6 text-red-600" />
                           <div className="text-left">
                             <p className="text-sm font-medium text-gray-900">{govtIdFile.name}</p>
                             <p className="text-xs text-gray-500">{(govtIdFile.size / 1024 / 1024).toFixed(2)} MB</p>
@@ -647,8 +647,8 @@ const Register = () => {
               type="submit"
               disabled={isLoading}
               className={`w-full py-3 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 ${role === "mla"
-                ? "bg-gradient-to-r from-purple-500 to-pink-600"
-                : "bg-gradient-to-r from-indigo-500 to-purple-600"
+                ? "bg-gradient-to-r from-red-500 to-red-600"
+                : "bg-gradient-to-r from-indigo-500 to-blue-600"
                 }`}
             >
               {isLoading ? (
@@ -666,8 +666,8 @@ const Register = () => {
 
             {/* MLA Note */}
             {role === "mla" && (
-              <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                <p className="text-xs text-purple-800">
+              <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-xs text-red-800">
                   <strong>📋 Note:</strong> Your application will be reviewed by admins.
                   You'll receive email notification once approved. After approval, login using MLA login option.
                 </p>

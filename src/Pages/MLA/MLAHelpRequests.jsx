@@ -74,7 +74,7 @@ const MLAHelpRequests = () => {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-purple-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-red-600"></div>
             </div>
         );
     }
@@ -93,7 +93,7 @@ const MLAHelpRequests = () => {
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className="bg-white rounded-lg border border-gray-200 p-4">
                     <div className="flex items-center gap-2 mb-1">
-                        <Users className="w-4 h-4 text-purple-600" />
+                        <Users className="w-4 h-4 text-red-600" />
                         <span className="text-sm text-gray-600">Total</span>
                     </div>
                     <div className="text-2xl font-bold text-gray-900">{stats.total}</div>
@@ -139,7 +139,7 @@ const MLAHelpRequests = () => {
                             placeholder="Search requests..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                         />
                     </div>
 
@@ -147,7 +147,7 @@ const MLAHelpRequests = () => {
                     <select
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     >
                         <option value="ALL">All Categories</option>
                         {HELP_CATEGORIES_ARRAY.map((cat) => (
@@ -161,7 +161,7 @@ const MLAHelpRequests = () => {
                     <select
                         value={selectedStatus}
                         onChange={(e) => setSelectedStatus(e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     >
                         <option value="ALL">All Status</option>
                         <option value="PENDING">Pending</option>
@@ -175,7 +175,7 @@ const MLAHelpRequests = () => {
                     <select
                         value={selectedPriority}
                         onChange={(e) => setSelectedPriority(e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     >
                         <option value="ALL">All Priorities</option>
                         <option value="CRITICAL">Critical</option>

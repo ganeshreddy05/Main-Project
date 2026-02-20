@@ -90,7 +90,7 @@ const MLARegister = () => {
 
     if (success) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 flex items-center justify-center p-6">
+            <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50 flex items-center justify-center p-6">
                 <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <CheckCircle className="w-8 h-8 text-green-600" />
@@ -99,8 +99,8 @@ const MLARegister = () => {
                     <p className="text-gray-600 mb-4">
                         Your MLA application has been submitted successfully. Our admin team will review your application and notify you via email.
                     </p>
-                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
-                        <p className="text-sm text-purple-800">
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                        <p className="text-sm text-red-800">
                             <strong>What's next?</strong><br />
                             - Admin will review your documents<br />
                             - You'll receive an email notification<br />
@@ -109,7 +109,7 @@ const MLARegister = () => {
                     </div>
                     <Link
                         to="/"
-                        className="inline-block px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg transition"
+                        className="inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-amber-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
                     >
                         Back to Home
                     </Link>
@@ -119,11 +119,11 @@ const MLARegister = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 flex items-center justify-center p-6">
+        <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50 flex items-center justify-center p-6">
             {/* Background Decoration */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-20"></div>
-                <div className="absolute top-0 -right-4 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-20"></div>
+                <div className="absolute top-0 -left-4 w-72 h-72 bg-red-200 rounded-full mix-blend-multiply filter blur-xl opacity-20"></div>
+                <div className="absolute top-0 -right-4 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-20"></div>
             </div>
 
             {/* Registration Card */}
@@ -131,7 +131,7 @@ const MLARegister = () => {
                 {/* Back Link */}
                 <Link
                     to="/"
-                    className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 mb-6 group"
+                    className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 mb-6 group"
                 >
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition" />
                     <span className="font-medium">Back to Home</span>
@@ -141,7 +141,7 @@ const MLARegister = () => {
                 <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl mb-4">
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl mb-4">
                             <Shield className="w-8 h-8 text-white" />
                         </div>
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">MLA Registration</h1>
@@ -170,7 +170,7 @@ const MLARegister = () => {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     placeholder="Enter your full name"
-                                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition"
                                     required
                                 />
                             </div>
@@ -189,7 +189,7 @@ const MLARegister = () => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="you@example.com"
-                                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition"
                                         required
                                     />
                                 </div>
@@ -206,7 +206,7 @@ const MLARegister = () => {
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
                                         placeholder="+91-XXXXXXXXXX"
-                                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition"
                                         required
                                     />
                                 </div>
@@ -227,7 +227,7 @@ const MLARegister = () => {
                                             setState(e.target.value);
                                             setConstituency("");
                                         }}
-                                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition appearance-none bg-white"
+                                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition appearance-none bg-white"
                                         required
                                     >
                                         <option value="">Select State</option>
@@ -247,7 +247,7 @@ const MLARegister = () => {
                                     <select
                                         value={constituency}
                                         onChange={(e) => setConstituency(e.target.value)}
-                                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition appearance-none bg-white"
+                                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition appearance-none bg-white"
                                         disabled={!state}
                                         required
                                     >
@@ -270,7 +270,7 @@ const MLARegister = () => {
                                 value={partyName}
                                 onChange={(e) => setPartyName(e.target.value)}
                                 placeholder="e.g., INC, BJP, TRS"
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition"
                             />
                         </div>
 
@@ -279,7 +279,7 @@ const MLARegister = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Government ID Proof <span className="text-red-500">*</span>
                             </label>
-                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-purple-500 transition">
+                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-500 transition">
                                 <input
                                     type="file"
                                     onChange={(e) => setGovtIdFile(e.target.files[0])}
@@ -291,7 +291,7 @@ const MLARegister = () => {
                                 <label htmlFor="govt-id" className="cursor-pointer">
                                     {govtIdFile ? (
                                         <div className="flex items-center justify-center gap-3">
-                                            <FileText className="w-6 h-6 text-purple-600" />
+                                            <FileText className="w-6 h-6 text-red-600" />
                                             <div className="text-left">
                                                 <p className="text-sm font-medium text-gray-900">{govtIdFile.name}</p>
                                                 <p className="text-xs text-gray-500">{(govtIdFile.size / 1024 / 1024).toFixed(2)} MB</p>
@@ -313,7 +313,7 @@ const MLARegister = () => {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                            className="w-full py-3 bg-gradient-to-r from-yellow-500 to-amber-500 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                         >
                             {isLoading ? (
                                 <span className="flex items-center justify-center gap-2">
@@ -330,8 +330,8 @@ const MLARegister = () => {
                     </form>
 
                     {/* Important Note */}
-                    <div className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                        <p className="text-xs text-purple-800">
+                    <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-xs text-red-800">
                             <strong>📋 Note:</strong> Your application will be reviewed by our admin team.
                             You'll receive an email notification once your application is approved.
                             Please ensure all information is accurate.

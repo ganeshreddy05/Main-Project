@@ -12,9 +12,9 @@ import {
 
 const AdminSettings = () => {
     const [settings, setSettings] = useState({
-        siteName: "Turn The Wheel",
+        siteName: "Fix My District",
         siteDescription: "Citizen Engagement Platform",
-        adminEmail: "admin@turnthewheel.com",
+        adminEmail: "admin@fixmydistrict.com",
         enableNotifications: true,
         enableEmailAlerts: true,
         autoApproveOfficials: false,

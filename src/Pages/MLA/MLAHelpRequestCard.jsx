@@ -98,12 +98,12 @@ const MLAHelpRequestCard = ({ request, onUpdate }) => {
                 {request.priority && (
                     <span
                         className={`ml-auto px-2 py-0.5 rounded text-xs font-semibold ${request.priority === "CRITICAL"
-                                ? "bg-rose-100 text-rose-700"
-                                : request.priority === "HIGH"
-                                    ? "bg-orange-100 text-orange-700"
-                                    : request.priority === "MEDIUM"
-                                        ? "bg-yellow-100 text-yellow-700"
-                                        : "bg-gray-100 text-gray-700"
+                            ? "bg-rose-100 text-rose-700"
+                            : request.priority === "HIGH"
+                                ? "bg-orange-100 text-orange-700"
+                                : request.priority === "MEDIUM"
+                                    ? "bg-yellow-100 text-yellow-700"
+                                    : "bg-gray-100 text-gray-700"
                             }`}
                     >
                         {request.priority}
@@ -133,17 +133,17 @@ const MLAHelpRequestCard = ({ request, onUpdate }) => {
 
             {/* Latest MLA Response Preview */}
             {latestResponse && (
-                <div className="bg-purple-50 border border-purple-200 rounded-lg px-3 py-2 mb-3">
+                <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-3">
                     <div className="flex items-start gap-2">
-                        <MessageSquare className="w-4 h-4 text-purple-600 mt-0.5" />
+                        <MessageSquare className="w-4 h-4 text-red-600 mt-0.5" />
                         <div className="flex-1 min-w-0">
-                            <p className="text-xs font-semibold text-purple-900 mb-0.5">
+                            <p className="text-xs font-semibold text-red-900 mb-0.5">
                                 Your Response:
                             </p>
-                            <p className="text-xs text-purple-700 line-clamp-2">
+                            <p className="text-xs text-red-700 line-clamp-2">
                                 {latestResponse.message}
                             </p>
-                            <p className="text-xs text-purple-600 mt-1">
+                            <p className="text-xs text-red-600 mt-1">
                                 {new Date(latestResponse.$createdAt).toLocaleDateString()}
                             </p>
                         </div>
@@ -211,7 +211,7 @@ const MLAHelpRequestCard = ({ request, onUpdate }) => {
                     </button>
                     <button
                         onClick={() => setShowResponseModal(true)}
-                        className="px-3 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-xs font-semibold"
+                        className="px-3 py-1.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors text-xs font-semibold"
                     >
                         {responses.length > 0 ? "Update" : "Respond"}
                     </button>
