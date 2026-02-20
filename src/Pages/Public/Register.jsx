@@ -247,7 +247,7 @@ const Register = () => {
               <strong>⏳ Waiting for Admin Approval</strong><br />
               • Your application is under review<br />
               • You'll receive an email notification once approved<br />
-              • After approval, you can login using the MLA login option<br />
+              • After approval, you can login using the GovernmentOfficial login option<br />
               • Review usually takes 1-2 business days
             </p>
           </div>

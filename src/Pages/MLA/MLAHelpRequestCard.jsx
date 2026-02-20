@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { databases, Query } from "@/services/appwriteConfig";
+import { databases, Query, ID } from "@/services/appwriteConfig";
 import { AuthContext } from "@/context/AuthProvider";
 import {
     MapPin,
@@ -9,16 +9,20 @@ import {
     Eye,
     MessageSquare,
     Navigation,
+    Briefcase,
 } from "lucide-react";
 import { HELP_CATEGORIES_ARRAY } from "@/constants/helpRequestConstants";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import MLAResponseModal from "./MLAResponseModal";
+import AssignToDepartmentModal from "@/components/AssignToDepartmentModal";
+import { createWorkOrder } from "@/services/workOrderService";
 
 const MLAHelpRequestCard = ({ request, onUpdate }) => {
-    const { profile } = useContext(AuthContext);
+    const { profile, user } = useContext(AuthContext);
     const queryClient = useQueryClient();
     const [imageError, setImageError] = useState(false);
     const [showResponseModal, setShowResponseModal] = useState(false);
+    const [showAssignModal, setShowAssignModal] = useState(false);
 
     const categoryInfo = HELP_CATEGORIES_ARRAY.find(
         (cat) => cat.value === request.category
@@ -47,6 +51,54 @@ const MLAHelpRequestCard = ({ request, onUpdate }) => {
                 "_blank"
             );
         }
+    };
+
+    // Mutation to assign work to department
+    const assignWorkMutation = useMutation({
+        mutationFn: async ({ report, assignmentData }) => {
+            const uniqueWorkOrderId = `WO-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+            const workOrderData = {
+                workOrderId: uniqueWorkOrderId,
+                helpRequestId: report.$id,
+                mlaId: user?.$id,
+                mlaName: profile?.name || "Unknown MLA",
+                mlaConstituency: profile?.district || "",
+                assignedDepartment: assignmentData.department,
+                priorityLevel: assignmentData.priority,
+                status: "pending",
+                mlaInstructions: assignmentData.instructions,
+                assignedAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            };
+
+            if (assignmentData.estimatedDate) {
+                workOrderData.estimatedCompletionDate = assignmentData.estimatedDate;
+            }
+
+            const workOrder = await createWorkOrder(workOrderData);
+            return workOrder;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(["mla-help-requests"]);
+            setShowAssignModal(false);
+            alert("Work order assigned successfully! The department will be notified.");
+        },
+        onError: (error) => {
+            console.error("Error assigning work order:", error);
+            alert("Error assigning work order: " + error.message);
+        },
+    });
+
+    const handleOpenAssignModal = () => {
+        setShowAssignModal(true);
+    };
+
+    const handleAssignWork = (assignmentData) => {
+        assignWorkMutation.mutate({
+            report: request,
+            assignmentData,
+        });
     };
 
     // Status colors
@@ -210,8 +262,15 @@ const MLAHelpRequestCard = ({ request, onUpdate }) => {
                         <span>Navigate</span>
                     </button>
                     <button
+                        onClick={handleOpenAssignModal}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-yellow-500 to-amber-500 text-white rounded-lg hover:from-yellow-600 hover:to-amber-600 transition-all text-xs font-semibold"
+                    >
+                        <Briefcase className="w-3.5 h-3.5" />
+                        <span>Assign</span>
+                    </button>
+                    <button
                         onClick={() => setShowResponseModal(true)}
-                        className="px-3 py-1.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors text-xs font-semibold"
+                        className="px-3 py-1.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors text-xs font-semibold"
                     >
                         {responses.length > 0 ? "Update" : "Respond"}
                     </button>
@@ -228,6 +287,16 @@ const MLAHelpRequestCard = ({ request, onUpdate }) => {
                         onUpdate();
                         queryClient.invalidateQueries(["mla-help-responses", request.$id]);
                     }}
+                />
+            )}
+
+            {/* Assignment Modal */}
+            {showAssignModal && (
+                <AssignToDepartmentModal
+                    report={request}
+                    onClose={() => setShowAssignModal(false)}
+                    onAssign={handleAssignWork}
+                    isLoading={assignWorkMutation.isPending}
                 />
             )}
         </div>

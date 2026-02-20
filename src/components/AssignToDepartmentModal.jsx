@@ -73,13 +73,39 @@ const AssignToDepartmentModal = ({ report, onClose, onAssign, isLoading }) => {
                             Original Report
                         </h3>
                         <div className="space-y-1 text-sm text-red-800">
-                            <p>
-                                <span className="font-medium">Route:</span> {report.fromPlace} → {report.toPlace}
-                            </p>
-                            <p>
-                                <span className="font-medium">Condition:</span>{" "}
-                                {report.condition?.replace(/_/g, " ")}
-                            </p>
+                            {/* Road Report fields */}
+                            {report.fromPlace && (
+                                <p>
+                                    <span className="font-medium">Route:</span> {report.fromPlace} → {report.toPlace}
+                                </p>
+                            )}
+                            {report.condition && (
+                                <p>
+                                    <span className="font-medium">Condition:</span>{" "}
+                                    {report.condition?.replace(/_/g, " ")}
+                                </p>
+                            )}
+                            {/* Help Request fields */}
+                            {report.title && (
+                                <p>
+                                    <span className="font-medium">Title:</span> {report.title}
+                                </p>
+                            )}
+                            {report.category && !report.fromPlace && (
+                                <p>
+                                    <span className="font-medium">Category:</span> {report.category?.replace(/_/g, " ")}
+                                </p>
+                            )}
+                            {report.priority && !report.fromPlace && (
+                                <p>
+                                    <span className="font-medium">Priority:</span> {report.priority}
+                                </p>
+                            )}
+                            {report.village && (
+                                <p>
+                                    <span className="font-medium">Location:</span> {report.village}, {report.mandal}
+                                </p>
+                            )}
                             <p>
                                 <span className="font-medium">Reported:</span>{" "}
                                 {new Date(report.$createdAt).toLocaleDateString()}
