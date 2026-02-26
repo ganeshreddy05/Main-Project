@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { databases, storage, ID, Permission, Role } from "@/services/appwriteConfig";
 import { useAuth } from "@/context/useAuth";
+import { notifyMLAsAboutReport } from "@/services/notificationService";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -109,7 +110,7 @@ const CreateRoadReport = ({ state, district, onSubmitted }) => {
       return res; // IMPORTANT for spinner
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       setFromPlace("");
       setToPlace("");
       setCondition("");
@@ -124,6 +125,16 @@ const CreateRoadReport = ({ state, district, onSubmitted }) => {
       queryClient.invalidateQueries(["dashboard-road-reports"]);
       // Invalidate MLA queries so reports show up immediately on MLA dashboard
       queryClient.invalidateQueries(["mla-road-reports"]);
+
+      // 🔔 Notify MLAs in this district
+      notifyMLAsAboutReport({
+        district,
+        type: "ROAD_REPORT",
+        title: `New Road Report: ${fromPlace} → ${toPlace}`,
+        message: `${user.name} reported a road issue (${condition}) from ${fromPlace} to ${toPlace} in ${district}.`,
+        reportId: data.$id,
+        reporterName: user.name,
+      });
 
       // notify parent (optional)
       if (typeof onSubmitted === "function") onSubmitted();
