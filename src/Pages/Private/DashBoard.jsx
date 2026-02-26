@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen" style={{ backgroundColor: '#D3DAD9' }}>
       {/* Sidebar */}
       <Sidebar />
 

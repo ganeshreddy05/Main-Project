@@ -3,7 +3,7 @@ import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { databases, Query } from "@/services/appwriteConfig";
 import { useAuth } from "@/context/useAuth";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Heart, MapPin, Navigation, Users, Eye } from "lucide-react";
+import { Heart, MapPin, Navigation, Users, Eye, Trash2, CheckCircle } from "lucide-react";
 import { HELP_CATEGORIES_ARRAY } from "@/constants/helpRequestConstants";
 
 const HelpRequestCard = ({ request, showActions = false }) => {
@@ -70,6 +70,11 @@ const HelpRequestCard = ({ request, showActions = false }) => {
             queryClient.invalidateQueries(["help-requests"]);
             queryClient.invalidateQueries(["my-help-requests"]);
             queryClient.invalidateQueries(["dashboard-help-requests"]);
+            alert("✅ Help request deleted successfully.");
+        },
+        onError: (error) => {
+            console.error("Delete failed:", error);
+            alert("❌ Failed to delete: " + (error?.message || "Permission denied. You may not have delete access to this document."));
         },
     });
 
@@ -176,25 +181,59 @@ const HelpRequestCard = ({ request, showActions = false }) => {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between mt-3 text-xs">
-                <span className="text-gray-500">
-                    <span className="font-medium text-gray-700">{request.reporterName}</span> • {new Date(request.$createdAt).toLocaleDateString()}
-                </span>
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={handleNavigate}
-                        className="flex items-center gap-1 text-emerald-600 hover:text-emerald-700 font-semibold transition-colors"
-                    >
-                        <Navigation className="w-3.5 h-3.5" />
-                        <span>Navigate</span>
-                    </button>
-                    <button
-                        onClick={() => window.location.href = `/dashboard/help-requests/${request.$id}`}
-                        className="px-3 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
-                    >
-                        View Details
-                    </button>
+            <div className="mt-3 text-xs space-y-3">
+                <div className="flex items-center justify-between">
+                    <span className="text-gray-500">
+                        <span className="font-medium text-gray-700">{request.reporterName}</span> • {new Date(request.$createdAt).toLocaleDateString()}
+                    </span>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={handleNavigate}
+                            className="flex items-center gap-1 text-emerald-600 hover:text-emerald-700 font-semibold transition-colors"
+                        >
+                            <Navigation className="w-3.5 h-3.5" />
+                            <span>Navigate</span>
+                        </button>
+                        <button
+                            onClick={() => window.location.href = `/dashboard/help-requests/${request.$id}`}
+                            className="px-3 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
+                        >
+                            View Details
+                        </button>
+                    </div>
                 </div>
+
+                {/* Delete & Resolve buttons (only for owner in My History) */}
+                {showActions && isOwner && (
+                    <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                        {request.status !== "RESOLVED" && (
+                            <button
+                                onClick={() => {
+                                    if (window.confirm("Mark this request as resolved?")) {
+                                        resolveMutation.mutate();
+                                    }
+                                }}
+                                disabled={resolveMutation.isPending}
+                                className="flex items-center gap-1 px-3 py-1.5 bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200 transition-colors text-xs font-semibold"
+                            >
+                                <CheckCircle className="w-3.5 h-3.5" />
+                                {resolveMutation.isPending ? "..." : "Resolve"}
+                            </button>
+                        )}
+                        <button
+                            onClick={() => {
+                                if (window.confirm("Are you sure you want to delete this help request? This action cannot be undone.")) {
+                                    deleteMutation.mutate();
+                                }
+                            }}
+                            disabled={deleteMutation.isPending}
+                            className="flex items-center gap-1 px-3 py-1.5 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-xs font-semibold"
+                        >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            {deleteMutation.isPending ? "Deleting..." : "Delete"}
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

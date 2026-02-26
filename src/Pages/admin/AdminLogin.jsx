@@ -60,11 +60,11 @@ const AdminLogin = () => {
                     alt="Analytics Dashboard"
                     className="absolute inset-0 w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-red-900/60"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-pink-900/60"></div>
                 <div className="relative z-10 flex flex-col justify-end p-12 text-white">
                     <div className="inline-flex items-center gap-2 mb-4">
-                        <Shield className="w-6 h-6 text-red-400" />
-                        <span className="text-red-300 font-medium text-sm uppercase tracking-wider">Restricted Access</span>
+                        <Shield className="w-6 h-6 text-pink-400" />
+                        <span className="text-pink-300 font-medium text-sm uppercase tracking-wider">Restricted Access</span>
                     </div>
                     <h2 className="text-4xl font-bold mb-3">Admin Control Center</h2>
                     <p className="text-lg text-gray-300 max-w-md">
@@ -74,12 +74,13 @@ const AdminLogin = () => {
             </div>
 
             {/* Right Side — Login Form */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-gradient-to-br from-red-50 via-white to-orange-50">
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-gradient-to-br from-pink-50 via-white to-rose-50">
                 <div className="relative w-full max-w-md">
                     {/* Back Link */}
                     <Link
                         to="/"
-                        className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 mb-6 group"
+                        className="inline-flex items-center gap-2 hover:text-pink-700 mb-6 group"
+                        style={{ color: '#EA2264' }}
                     >
                         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition" />
                         <span className="font-medium">Back to Home</span>
@@ -89,7 +90,7 @@ const AdminLogin = () => {
                     <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
                         {/* Header */}
                         <div className="text-center mb-8">
-                            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-700 rounded-2xl mb-4">
+                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4" style={{ backgroundColor: '#EA2264' }}>
                                 <Settings className="w-8 h-8 text-white" />
                             </div>
                             <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Portal</h1>
@@ -118,7 +119,7 @@ const AdminLogin = () => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="admin@example.com"
-                                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition"
+                                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition"
                                         required
                                     />
                                 </div>
@@ -136,7 +137,7 @@ const AdminLogin = () => {
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Enter your password"
-                                        className="w-full pl-11 pr-11 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition"
+                                        className="w-full pl-11 pr-11 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition"
                                         required
                                     />
                                     <button
@@ -153,7 +154,8 @@ const AdminLogin = () => {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full py-3 bg-gradient-to-r from-red-500 to-orange-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                                className="w-full py-3 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                                style={{ background: 'linear-gradient(to right, #EA2264, #D11D58)' }}
                             >
                                 {isLoading ? (
                                     <span className="flex items-center justify-center gap-2">

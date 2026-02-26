@@ -1,6 +1,9 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "@/context/AuthProvider";
+import { getUnreadCount } from "@/services/notificationService";
+import MLANotifications from "./MLANotifications";
 
 import {
     LayoutDashboard,
@@ -16,6 +19,15 @@ import {
 const MLADashboard = () => {
     const { logout, profile } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [showNotifications, setShowNotifications] = useState(false);
+
+    // Fetch unread notification count
+    const { data: unreadCount = 0 } = useQuery({
+        queryKey: ["mla-unread-count", profile?.userId],
+        queryFn: () => getUnreadCount(profile?.userId),
+        enabled: !!profile?.userId,
+        refetchInterval: 15000, // Refresh every 15 seconds
+    });
 
     const handleLogout = async () => {
         try {
@@ -64,9 +76,16 @@ const MLADashboard = () => {
                             </div>
 
                             {/* Notifications */}
-                            <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-md transition">
+                            <button
+                                onClick={() => setShowNotifications(true)}
+                                className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-md transition"
+                            >
                                 <Bell className="w-5 h-5" />
-                                <span className="absolute top-1 right-1 w-2 h-2 bg-blue-600 rounded-full"></span>
+                                {unreadCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 min-w-[20px] h-5 flex items-center justify-center px-1 bg-red-600 text-white text-xs font-bold rounded-full">
+                                        {unreadCount > 99 ? "99+" : unreadCount}
+                                    </span>
+                                )}
                             </button>
 
                             {/* MLA Info */}
@@ -131,6 +150,13 @@ const MLADashboard = () => {
                     <Outlet />
                 </main>
             </div>
+
+            {/* Notification Panel */}
+            <MLANotifications
+                userId={profile?.userId}
+                isOpen={showNotifications}
+                onClose={() => setShowNotifications(false)}
+            />
         </div>
     );
 };

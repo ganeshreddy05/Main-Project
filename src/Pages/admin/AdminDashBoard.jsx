@@ -42,7 +42,7 @@ const AdminDashboard = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="bg-slate-700 p-2 rounded-lg">
+              <div className="p-2 rounded-lg" style={{ backgroundColor: '#EA2264' }}>
                 <ShieldCheck className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -56,16 +56,16 @@ const AdminDashboard = () => {
               {/* Notifications */}
               <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-md transition">
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-slate-600 rounded-full"></span>
+                <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ backgroundColor: '#EA2264' }}></span>
               </button>
 
               {/* Admin Info */}
               <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
                 <div className="text-right">
                   <p className="text-sm font-semibold text-gray-900">{profile?.name}</p>
-                  <p className="text-xs text-slate-700">Administrator</p>
+                  <p className="text-xs" style={{ color: '#EA2264' }}>Administrator</p>
                 </div>
-                <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#EA2264' }}>
                   <span className="text-white font-semibold text-sm">
                     {profile?.name?.charAt(0).toUpperCase()}
                   </span>
@@ -99,14 +99,14 @@ const AdminDashboard = () => {
                   end={item.path === "/admin/dashboard"}
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-4 py-2.5 rounded-md transition ${isActive
-                      ? "bg-slate-50 text-slate-700 font-medium"
+                      ? "bg-pink-50 text-pink-700 font-medium"
                       : "text-gray-700 hover:bg-gray-100"
                     }`
                   }
                 >
                   {({ isActive }) => (
                     <>
-                      <Icon className={`w-5 h-5 ${isActive ? "text-slate-700" : "text-gray-500"}`} />
+                      <Icon className={`w-5 h-5 ${isActive ? "text-pink-600" : "text-gray-500"}`} />
                       <span>{item.label}</span>
                     </>
                   )}

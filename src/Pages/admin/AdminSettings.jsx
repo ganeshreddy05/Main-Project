@@ -58,7 +58,7 @@ const AdminSettings = () => {
                 {/* General Settings */}
                 <div className="bg-white rounded-xl shadow-md p-6">
                     <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <Globe className="w-5 h-5 text-slate-600" />
+                        <Globe className="w-5 h-5" style={{ color: '#EA2264' }} />
                         General Settings
                     </h2>
                     <div className="space-y-4">
@@ -70,7 +70,7 @@ const AdminSettings = () => {
                                 type="text"
                                 value={settings.siteName}
                                 onChange={(e) => handleChange("siteName", e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none"
                             />
                         </div>
                         <div>
@@ -81,7 +81,7 @@ const AdminSettings = () => {
                                 value={settings.siteDescription}
                                 onChange={(e) => handleChange("siteDescription", e.target.value)}
                                 rows={3}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none resize-none"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none resize-none"
                             />
                         </div>
                         <div>
@@ -92,7 +92,7 @@ const AdminSettings = () => {
                                 type="email"
                                 value={settings.adminEmail}
                                 onChange={(e) => handleChange("adminEmail", e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none"
                             />
                         </div>
                     </div>
@@ -101,7 +101,7 @@ const AdminSettings = () => {
                 {/* Notification Settings */}
                 <div className="bg-white rounded-xl shadow-md p-6">
                     <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <Bell className="w-5 h-5 text-slate-600" />
+                        <Bell className="w-5 h-5" style={{ color: '#EA2264' }} />
                         Notification Settings
                     </h2>
                     <div className="space-y-4">
@@ -112,7 +112,7 @@ const AdminSettings = () => {
                             </div>
                             <button
                                 onClick={() => handleChange("enableNotifications", !settings.enableNotifications)}
-                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${settings.enableNotifications ? "bg-slate-600" : "bg-gray-300"
+                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${settings.enableNotifications ? "bg-pink-600" : "bg-gray-300"
                                     }`}
                             >
                                 <span
@@ -128,7 +128,7 @@ const AdminSettings = () => {
                             </div>
                             <button
                                 onClick={() => handleChange("enableEmailAlerts", !settings.enableEmailAlerts)}
-                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${settings.enableEmailAlerts ? "bg-slate-600" : "bg-gray-300"
+                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${settings.enableEmailAlerts ? "bg-pink-600" : "bg-gray-300"
                                     }`}
                             >
                                 <span
@@ -143,7 +143,7 @@ const AdminSettings = () => {
                 {/* Security Settings */}
                 <div className="bg-white rounded-xl shadow-md p-6">
                     <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-slate-600" />
+                        <Shield className="w-5 h-5" style={{ color: '#EA2264' }} />
                         Security Settings
                     </h2>
                     <div className="space-y-4">
@@ -154,7 +154,7 @@ const AdminSettings = () => {
                             </div>
                             <button
                                 onClick={() => handleChange("autoApproveOfficials", !settings.autoApproveOfficials)}
-                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${settings.autoApproveOfficials ? "bg-slate-600" : "bg-gray-300"
+                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${settings.autoApproveOfficials ? "bg-pink-600" : "bg-gray-300"
                                     }`}
                             >
                                 <span
@@ -173,7 +173,7 @@ const AdminSettings = () => {
                                 onChange={(e) => handleChange("sessionTimeout", e.target.value)}
                                 min="5"
                                 max="120"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none"
                             />
                         </div>
                     </div>
@@ -182,7 +182,7 @@ const AdminSettings = () => {
                 {/* System Settings */}
                 <div className="bg-white rounded-xl shadow-md p-6">
                     <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <Database className="w-5 h-5 text-slate-600" />
+                        <Database className="w-5 h-5" style={{ color: '#EA2264' }} />
                         System Settings
                     </h2>
                     <div className="space-y-4">
@@ -212,7 +212,7 @@ const AdminSettings = () => {
                                 onChange={(e) => handleChange("maxUploadSize", e.target.value)}
                                 min="1"
                                 max="100"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none"
                             />
                         </div>
                     </div>
@@ -238,7 +238,10 @@ const AdminSettings = () => {
                         </button>
                         <button
                             onClick={handleSave}
-                            className="px-6 py-2 bg-slate-700 text-white rounded-lg font-semibold hover:bg-slate-800 transition flex items-center gap-2"
+                            className="px-6 py-2 text-white rounded-lg font-semibold transition flex items-center gap-2"
+                            style={{ backgroundColor: '#EA2264' }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#D11D58'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#EA2264'}
                         >
                             <Save className="w-4 h-4" />
                             Save Changes

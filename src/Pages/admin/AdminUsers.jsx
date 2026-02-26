@@ -133,7 +133,7 @@ const AdminUsers = () => {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-orange-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200" style={{ borderTopColor: '#EA2264' }}></div>
             </div>
         );
     }
@@ -173,7 +173,7 @@ const AdminUsers = () => {
                             placeholder="Search by name, email, phone, location..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
+                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none"
                         />
                     </div>
 
@@ -183,7 +183,7 @@ const AdminUsers = () => {
                         <select
                             value={selectedRole}
                             onChange={(e) => setSelectedRole(e.target.value)}
-                            className="pl-10 pr-8 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none appearance-none bg-white min-w-[150px]"
+                            className="pl-10 pr-8 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none appearance-none bg-white min-w-[150px]"
                         >
                             <option value="all">All Roles</option>
                             <option value="citizen">Citizens</option>
@@ -199,7 +199,7 @@ const AdminUsers = () => {
                         <select
                             value={selectedStatus}
                             onChange={(e) => setSelectedStatus(e.target.value)}
-                            className="pl-10 pr-8 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none appearance-none bg-white min-w-[150px]"
+                            className="pl-10 pr-8 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none appearance-none bg-white min-w-[150px]"
                         >
                             <option value="all">All Status</option>
                             <option value="active">Active</option>
@@ -234,7 +234,7 @@ const AdminUsers = () => {
                                     <tr key={user.$id} className="hover:bg-gray-50 transition">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(to bottom right, #EA2264, #D11D58)' }}>
                                                     <span className="text-white font-bold text-sm">
                                                         {user.name.charAt(0).toUpperCase()}
                                                     </span>
@@ -337,8 +337,8 @@ const AdminUsers = () => {
                         {/* Modal Body */}
                         <div className="p-6 space-y-6">
                             {/* User Avatar & Basic Info */}
-                            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
-                                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <div className="flex items-center gap-4 p-4 rounded-lg" style={{ background: 'linear-gradient(to right, #fce4ec, #fce4ec88)' }}>
+                                <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(to bottom right, #EA2264, #D11D58)' }}>
                                     <span className="text-white font-bold text-2xl">
                                         {selectedUser.name.charAt(0).toUpperCase()}
                                     </span>

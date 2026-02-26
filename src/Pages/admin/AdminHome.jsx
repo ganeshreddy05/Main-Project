@@ -124,32 +124,32 @@ const AdminHome = () => {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-xl p-6 border border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
+            <div className="rounded-xl p-6" style={{ background: 'linear-gradient(135deg, #EA2264, #D11D58, #B5174C)' }}>
+                <h2 className="text-xl font-bold text-white mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Link
                         to="/admin/users"
-                        className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition group"
+                        className="p-4 bg-white/90 backdrop-blur rounded-lg border-2 border-white/30 hover:bg-white hover:shadow-lg hover:scale-[1.02] transition-all group"
                     >
-                        <Users className="w-6 h-6 text-blue-600 mb-2" />
+                        <Users className="w-6 h-6 mb-2" style={{ color: '#EA2264' }} />
                         <h3 className="font-semibold text-gray-900 mb-1">Manage Users</h3>
                         <p className="text-sm text-gray-600">View and manage all system users</p>
                     </Link>
 
                     <Link
                         to="/admin/mla-applications"
-                        className="p-4 border-2 border-gray-200 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition group"
+                        className="p-4 bg-white/90 backdrop-blur rounded-lg border-2 border-white/30 hover:bg-white hover:shadow-lg hover:scale-[1.02] transition-all group"
                     >
-                        <AlertCircle className="w-6 h-6 text-orange-600 mb-2" />
+                        <AlertCircle className="w-6 h-6 mb-2" style={{ color: '#EA2264' }} />
                         <h3 className="font-semibold text-gray-900 mb-1">Review Applications</h3>
                         <p className="text-sm text-gray-600">{pendingMLAs} pending applications</p>
                     </Link>
 
                     <Link
                         to="/dashboard/road-reports/all"
-                        className="p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition group"
+                        className="p-4 bg-white/90 backdrop-blur rounded-lg border-2 border-white/30 hover:bg-white hover:shadow-lg hover:scale-[1.02] transition-all group"
                     >
-                        <FileText className="w-6 h-6 text-green-600 mb-2" />
+                        <FileText className="w-6 h-6 mb-2" style={{ color: '#EA2264' }} />
                         <h3 className="font-semibold text-gray-900 mb-1">View Reports</h3>
                         <p className="text-sm text-gray-600">All road reports across India</p>
                     </Link>

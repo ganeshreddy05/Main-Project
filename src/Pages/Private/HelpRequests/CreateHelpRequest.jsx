@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, AlertCircle, X } from "lucide-react";
 import { HELP_CATEGORIES_ARRAY, VALIDATION_RULES } from "@/constants/helpRequestConstants";
+import { notifyMLAsAboutReport } from "@/services/notificationService";
 
 const CreateHelpRequest = ({ onSubmitted }) => {
   const { user, profile } = useAuth();
@@ -148,7 +149,7 @@ const CreateHelpRequest = ({ onSubmitted }) => {
       return res;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       // Reset form
       setCategory("");
       setTitle("");
@@ -165,6 +166,16 @@ const CreateHelpRequest = ({ onSubmitted }) => {
       queryClient.invalidateQueries(["help-requests"]);
       queryClient.invalidateQueries(["my-help-requests"]);
       queryClient.invalidateQueries(["dashboard-help-requests"]);
+
+      // 🔔 Notify MLAs in this district
+      notifyMLAsAboutReport({
+        district: profile.district,
+        type: "HELP_REQUEST",
+        title: `New Help Request: ${title}`,
+        message: `${user.name} reported a ${category} issue in ${village}, ${mandal}, ${profile.district}. Affected population: ${affectedPopulation} families.`,
+        reportId: data.$id,
+        reporterName: user.name,
+      });
 
       alert("✅ Help Request submitted successfully!");
 

@@ -32,6 +32,7 @@ import AdminDashboard from "@/Pages/Admin/AdminDashboard";
 import AdminHome from "@/Pages/Admin/AdminHome";
 import MLAApplications from "@/Pages/Admin/MLAApplications";
 import AdminUsers from "@/Pages/Admin/AdminUsers";
+import AdminSettings from "@/Pages/Admin/AdminSettings";
 
 /* MLA pages */
 import MLALogin from "@/Pages/MLA/MLALogin";
@@ -94,6 +95,7 @@ const App = () => {
           <Route path="dashboard" element={<AdminHome />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="mla-applications" element={<MLAApplications />} />
+          <Route path="settings" element={<AdminSettings />} />
         </Route>
 
         {/* OFFICIAL ROUTES - Only accessible by government officials */}
