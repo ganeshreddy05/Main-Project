@@ -31,7 +31,7 @@ const DashboardHome = lazy(() => import("@/Pages/Private/DashBoardHome"));
 
 /* Dashboard pages */
 const HelpRequests = lazy(() => import("@/Pages/Private/HelpRequests/HelpRequest"));
-const HelpRequestDetails = lazy(() => import("@/Pages/Private//HelpRequests/HelpRequestDetails"));
+const HelpRequestDetails = lazy(() => import("@/Pages/Private/HelpRequests/HelpRequestDetails"));
 
 const RoadReports = lazy(() => import("@/Pages/Private/RoadReportsfile/RoadReports"));
 const RoadReportsMenu = lazy(() => import("@/Pages/Private/RoadReportsfile/RoadReportsMenu"));
