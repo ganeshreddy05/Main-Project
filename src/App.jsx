@@ -45,7 +45,7 @@ const MyHelpRequests = lazy(() => import("@/Pages/Private/MyHelpRequests"));
 
 /* Admin pages */
 const AdminLogin = lazy(() => import("@/Pages/Admin/AdminLogin"));
-const AdminDashboard = lazy(() => import("@/Pages/Admin/AdminDashboard"));
+const AdminDashboard = lazy(() => import("@/Pages/Admin/AdminDashBoard"));
 const AdminHome = lazy(() => import("@/Pages/Admin/AdminHome"));
 const MLAApplications = lazy(() => import("@/Pages/Admin/MLAApplications"));
 const AdminUsers = lazy(() => import("@/Pages/Admin/AdminUsers"));
