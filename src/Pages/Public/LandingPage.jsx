@@ -289,9 +289,11 @@ const LandingPage = () => {
             <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
                 {/* Village Background Image */}
                 <img
-                    src="/image.png"
+                    src="/image.webp"
                     alt="Indian village landscape"
                     className="absolute inset-0 w-full h-full object-cover"
+                    fetchpriority="high"
+                    decoding="async"
                 />
                 {/* Dark Overlay for readability */}
                 <div className="absolute inset-0 bg-gradient-to-b from-gray-950/80 via-gray-900/70 to-gray-950/90"></div>
